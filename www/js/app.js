@@ -1,19 +1,6 @@
-var app = angular.module('lockupFront', ['ionic', 'google-maps'])
+angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'ngCordova'])
 
-app.controller('MainCtrl', function($scope) {
-  $scope.map = {
-    center: {
-      latitude: 43.07493, 
-      longitude: -89.381388
-    },
-    zoom: 8,
-    options: {
-      disableDefaultUI: true
-    }
-  };
-});
-
-app.run(function($ionicPlatform) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
