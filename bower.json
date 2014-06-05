@@ -7,6 +7,8 @@
   "dependencies": {
     "angular-google-maps": "~1.1.0",
     "underscore": "~1.6.0",
-    "ngCordova": "~0.1.1-alpha"
+    "ngCordova": "~0.1.1-alpha",
+    "restangular": "~1.4.0",
+    "angular-resource": "~1.2.16"
   }
 }

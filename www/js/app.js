@@ -1,6 +1,6 @@
-angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'ngCordova'])
+angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'restangular', 'ngResource'])
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform', function($ionicPlatform){
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -11,4 +11,4 @@ angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directive
       StatusBar.styleDefault();
     }
   });
-})
+}])

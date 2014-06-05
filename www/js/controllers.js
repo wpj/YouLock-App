@@ -1,6 +1,6 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', function($scope, $ionicLoading, $cordovaGeolocation) {
+.controller('MapCtrl', ['$scope', '$ionicLoading', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $cordovaGeolocation, Lockup){
   $scope.map = {
     center: {
       latitude: 40.677380, 
@@ -38,7 +38,10 @@ angular.module('controllers', [])
       latitude: 40.658100,
       longitude: -73.978627
     },
-  ]
+  ];
+
+  $scope.lockups = Lockup.get();
+  console.log(Lockup.get());
 
   $scope.getPosition = function() {
 
@@ -63,5 +66,4 @@ angular.module('controllers', [])
       alert('Unable to get location: ' + error.message);
     });
   }
-
-});
+}])
