@@ -39,15 +39,16 @@
         draggable="true"
         options="map.options"
         >
-        <marker coords='{latitude: 43.07493, longitude: -89.381388}'>
-        </marker>
+        <markers models="lockups" coords="'self'"></markers>
       </google-map>
 
-      <ion-footer-bar class="bar-stable">
-        <a ng-click="getPosition()" class="button button-icon icon ion-navigate"></a>
-      </ion-footer-bar>
-
     </div>
+
+    <ion-footer-bar class="bar-positive">
+      <!-- <button class="button button-assertive"> -->
+        <a ng-click="getPosition()" class="button button-icon icon ion-navigate"></a>
+      <!-- </button> -->
+    </ion-footer-bar>
     
   </body>
 </html>
