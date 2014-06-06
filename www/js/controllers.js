@@ -1,6 +1,6 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$ionicLoading', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $cordovaGeolocation, Lockup){
+.controller('MapCtrl', ['$scope', '$ionicLoading', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $cordovaGeolocation, Lockup, underscore){
   $scope.map = {
     control: {},
     center: {
@@ -14,17 +14,18 @@ angular.module('controllers', [])
     events: {
       dragend: function(map, event, eventArgs) {
         console.log('Done dragging');
+        searchInMapBounds(map);
       },
       zoom_changed: function(map, event, eventArgs) {
-        console.log('Zoom changed');
+        searchInMapBounds(map);
       }
-      // tilesloaded: function (map, eventName, originalEventArgs) {},
+      // tilesloaded: function (map, eventName, originalEventArgs) {
+      //   searchInMapBounds(map);
+      // }
       // click: function(map, eventName, originalEventArgs){},
       // bounds_changed: function(map, eventName, originalEventArgs) {}
     }
   };
-
-  $scope.lockups = Lockup.query();
 
   $scope.getPosition = function() {
 
@@ -50,26 +51,26 @@ angular.module('controllers', [])
     });
   };
 
-  $scope.searchInMapBounds = function() {
-    $ionicLoading.show({
-      content: '<i class="icon ion-loading-c"></i>',
-      noBackdrop: true,
-      showBackdrop: false
-    });
+  var searchInMapBounds = function(map) {
+
+    var currentMapArea = getMapBounds(map);
+
+    Lockup.query().$promise.then(
+      function(data) {
+        // filters out the lockups not in the current map bounds
+        $scope.lockups = _.filter(data, function(lockup) {
+          var coords = new google.maps.LatLng(lockup.coordinates.latitude, lockup.coordinates.longitude);
+          return currentMapArea.contains(coords);
+        });
+        console.log($scope.lockups);
+      },
+      function(err) {
+        console.log(error);
+      });
   };
 
-  var boundsChanged = function() {
-    var currentMap = $scope.map.control.getGMap().getBounds();
-    console.log(currentMap);
-  };
-
-  $scope.removeLockups = function() {
-    $scope.lockups = [];
-  };
-
-  $scope.refreshMap = function() {
-    $scope.map.control.refresh({latitude: 32.779680, longitude: -79.935493});
-    console.log($scope.map.control.getGMap().getBounds())
+  var getMapBounds = function(map) {
+    return map.getBounds();
   }
 
 }])
