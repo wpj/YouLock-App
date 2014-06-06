@@ -1,4 +1,4 @@
-angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'restangular', 'ngResource'])
+angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'ngResource'])
 
 .run(['$ionicPlatform', function($ionicPlatform){
   $ionicPlatform.ready(function() {
