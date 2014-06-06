@@ -40,6 +40,9 @@
         zoom="map.zoom"
         draggable="true"
         options="map.options"
+        events="map.events"
+        control="map.control"
+        pan="true"
         >
         <marker ng-repeat="lockup in lockups" coords='lockup.coordinates'></marker>
       </google-map>
@@ -47,9 +50,9 @@
     </div>
 
     <ion-footer-bar class="bar-positive">
-      <!-- <button class="button button-assertive"> -->
         <a ng-click="getPosition()" class="button button-icon icon ion-navigate"></a>
-      <!-- </button> -->
+        <button class="button button-assertive" ng-click="boundsChanged()">
+        </button>
     </ion-footer-bar>
 
     <!-- <div ng-repeat="lockup in lockups">
