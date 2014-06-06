@@ -12,36 +12,7 @@ angular.module('controllers', [])
     }
   };
 
-  $scope.lockups = [
-    {
-      id: 1,
-      latitude: 40.674263,
-      longitude: -73.981158
-    },
-    {
-      id: 2,
-      latitude: 40.678169,
-      longitude: -73.966953
-    },
-    {
-      id: 3,
-      latitude: 40.687525,
-      longitude: -73.964636
-    },
-    {
-      id: 4,
-      latitude: 40.669250,
-      longitude: -73.960731
-    },
-    {
-      id: 5,
-      latitude: 40.658100,
-      longitude: -73.978627
-    },
-  ];
-
-  $scope.lockups = Lockup.get();
-  console.log(Lockup.get());
+  $scope.lockups = Lockup.query();
 
   $scope.getPosition = function() {
 

@@ -19,9 +19,9 @@
     <script src='http://maps.googleapis.com/maps/api/js?sensor=false'></script>
     <script src="lib/underscore/underscore.js"></script>
     <script src="lib/angular-google-maps/dist/angular-google-maps.min.js"></script>
-    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-    <script src="lib/restangular/dist/restangular.min.js"></script>
-    <script src="lib/angular-resource/angular-resource.min.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="lib/restangular/dist/restangular.js"></script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
 
     <!-- your app's js -->
     <script src="js/controllers.js"></script>
@@ -42,7 +42,7 @@
         draggable="true"
         options="map.options"
         >
-        <markers models="lockups" coords="'self.coordinates'"></markers>
+        <marker ng-repeat="lockup in lockups" coords='lockup.coordinates'></marker>
       </google-map>
 
     </div>
@@ -52,6 +52,10 @@
         <a ng-click="getPosition()" class="button button-icon icon ion-navigate"></a>
       <!-- </button> -->
     </ion-footer-bar>
+
+    <!-- <div ng-repeat="lockup in lockups">
+        <em>{{lockup}}</em>
+    </div> -->
     
   </body>
 </html>
