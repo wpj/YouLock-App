@@ -12,13 +12,17 @@ angular.module('controllers', [])
       disableDefaultUI: true
     },
     events: {
-      dragend: function(map, event, eventArgs) {
-        console.log('Done dragging');
-        searchInMapBounds(map);
-      },
-      zoom_changed: function(map, event, eventArgs) {
+      idle: function(map, event, eventArgs) {
+        console.log('Idle event triggered');
         searchInMapBounds(map);
       }
+      // dragend: function(map, event, eventArgs) {
+      //   console.log('Done dragging');
+      //   searchInMapBounds(map);
+      // },
+      // zoom_changed: function(map, event, eventArgs) {
+      //   searchInMapBounds(map);
+      // }
       // tilesloaded: function (map, eventName, originalEventArgs) {
       //   searchInMapBounds(map);
       // }
