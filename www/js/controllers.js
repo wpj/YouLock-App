@@ -55,21 +55,34 @@ angular.module('controllers', [])
     });
   };
 
+  var getAllLockups = function() {
+    Lockup.findAll()
+      .success(function(data) {
+        $scope.lockups = data;
+        console.log($scope.lockups);
+      })
+      .error(function(err, status) {
+        console.log(error, status);
+      });
+  };
+
   var searchInMapBounds = function(map) {
 
     var currentMapArea = getMapBounds(map);
 
-    Lockup.query().$promise.then(
-      function(data) {
+    Lockup.findInMapArea(currentMapArea)
+      .success(function(data) {
         // filters out the lockups not in the current map bounds
-        $scope.lockups = _.filter(data, function(lockup) {
-          var coords = new google.maps.LatLng(lockup.coordinates.latitude, lockup.coordinates.longitude);
-          return currentMapArea.contains(coords);
-        });
-        console.log($scope.lockups);
-      },
-      function(err) {
-        console.log(error);
+        // $scope.lockups = _.filter(data, function(lockup) {
+        //   var coords = new google.maps.LatLng(lockup.coordinates.latitude, lockup.coordinates.longitude);
+        //   return currentMapArea.contains(coords);
+        // });
+        // console.log($scope.lockups);
+
+        console.log(data);
+      })
+      .error(function(err, status) {
+        console.log(error, status);
       });
   };
 
