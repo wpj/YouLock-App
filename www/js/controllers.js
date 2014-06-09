@@ -70,15 +70,24 @@ angular.module('controllers', [])
 
     var currentMapArea = getMapBounds(map);
 
-    Lockup.findInMapArea(currentMapArea)
+    var northEast = currentMapArea.getNorthEast();
+    var southWest = currentMapArea.getSouthWest();
+    
+    var SWLng = southWest.lng();
+    var SWLat = southWest.lat();
+    var NELng = northEast.lng(); 
+    var NELat = northEast.lat();
+
+    console.log(SWLng, SWLat, NELng, NELat);
+
+    Lockup.findInMapArea(SWLng, SWLat, NELng, NELat)
       .success(function(data) {
         // filters out the lockups not in the current map bounds
-        // $scope.lockups = _.filter(data, function(lockup) {
-        //   var coords = new google.maps.LatLng(lockup.coordinates.latitude, lockup.coordinates.longitude);
-        //   return currentMapArea.contains(coords);
-        // });
-        // console.log($scope.lockups);
-
+        $scope.lockups = _.filter(data, function(lockup) {
+          var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
+          return currentMapArea.contains(coords);
+        });
+        console.log($scope.lockups);
         console.log(data);
       })
       .error(function(err, status) {
