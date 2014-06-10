@@ -11,6 +11,7 @@ angular.module('controllers', [])
     options: {
       disableDefaultUI: true
     },
+    idKey: '_id',
     events: {
       idle: function(map, event, eventArgs) {
         console.log('Idle event triggered');
@@ -99,7 +100,7 @@ angular.module('controllers', [])
       .success(function(data) {
         // filters out the lockups not in the current map bounds
         $scope.lockups = _.filter(data, function(lockup) {
-          var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
+          var coords = new google.maps.LatLng(lockup.location.coordinates[1], lockup.location.coordinates[0]);
           return currentMapArea.contains(coords);
         });
 
