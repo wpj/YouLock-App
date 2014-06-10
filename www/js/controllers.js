@@ -117,7 +117,9 @@ angular.module('controllers', [])
         // };
 
 
+        console.log('Currently in $scope.lockups', $scope.lockups.length);
         console.log('$scope.lockups: ',$scope.lockups);
+        console.log('Lockups received: ', data.length);
         console.log('Transmitted data: ', data);
       })
       .error(function(err, status) {
