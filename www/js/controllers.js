@@ -4,10 +4,10 @@ angular.module('controllers', [])
   $scope.map = {
     control: {},
     center: {
-      latitude: 40.677380, 
+      latitude: 50.677380, 
       longitude: -73.976949
     },
-    zoom: 13,
+    zoom: 16,
     options: {
       disableDefaultUI: true
     },
@@ -31,6 +31,23 @@ angular.module('controllers', [])
     }
   };
 
+  var getPosition = function() {
+    $cordovaGeolocation.getCurrentPosition().then(function(position) {
+      mapCenter = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+    });
+  };
+
+  var mapCenter = angular.element(document).ready(function() {
+    $cordovaGeolocation.getCurrentPosition().then(function(position) {
+      // console.log(position);
+      console.log({ latitude: position.coords.latitude, longitude: position.coords.longitude });
+      return { latitude: position.coords.latitude, longitude: position.coords.longitude };
+    }, function(err) {
+      console.log('Unable to get location: ', error.message);
+    });
+    // console.log(mapCenter);
+  });
+
   $scope.getPosition = function() {
 
     console.log("Centering");
@@ -47,7 +64,7 @@ angular.module('controllers', [])
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-      $scope.map.zoom = 15;
+      $scope.map.zoom = 17;
       $ionicLoading.hide();
       return position.coords;
     }, function(err) {
@@ -85,11 +102,25 @@ angular.module('controllers', [])
           var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
           return currentMapArea.contains(coords);
         });
+
+        /* Logic for caching markers already on the map (doesn't work yet) */
+
+        // if (!$scope.lockups) {
+        //   $scope.lockups = data;
+        // } else {
+        //   var newData = _.filter(data, function(lockup) {
+        //     var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
+        //     return currentMapArea.contains(coords);
+        //   });
+        //   $scope.lockups.push(newData);
+        // };
+
+
         console.log('$scope.lockups: ',$scope.lockups);
         console.log('Transmitted data: ', data);
       })
       .error(function(err, status) {
-        console.log(error, status);
+        console.log(err, status);
       });
   };
 
