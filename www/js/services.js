@@ -17,11 +17,11 @@ angular.module('services', [])
         }
       });
     },
-    submit: function(lockup, callback) {
+    submit: function(lockup, callback, errCb) {
       $http.post('http://localhost:8080/api/lockups', lockup).success(function(data) {
         callback(data);
       }).error(function(error) {
-        console.log("Lockup submission failed.", error);
+        errCb(error);
       })
     }
   };

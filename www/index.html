@@ -33,27 +33,34 @@
   </head>
   <body ng-app="lockupFront" ng-controller="MapCtrl">
 
-      <div id="map-container">
-        
-        <google-map
-          center="map.center"
-          zoom="map.zoom"
-          draggable="true"
-          options="map.options"
-          events="map.events"
-          control="map.control"
-          pan="true"
-          >
-          <markers models="lockups" click="markerInfo" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16}">
-              <!-- <window coords="map.center"></window> -->
-          </markers>
-        </google-map>
+    <ion-header-bar class="bar bar-header item-input-inset">
+      <label class="item-input-wrapper">
+        <i class="icon ion-ios7-search placeholder-icon"></i>
+        <input type="search" placeholder="Search by address">
+      </label>
+      <button class="button button-clear">
+        Cancel
+      </button>
+    </ion-header-bar>
 
-      </div>
+    <div id="map-container" data-tap-disabled="true">
+      
+      <google-map
+        center="map.center"
+        zoom="map.zoom"
+        draggable="true"
+        options="map.options"
+        events="map.events"
+        control="map.control"
+        >
+        <markers models="lockups" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}">
+      </google-map>
 
-    <ion-footer-bar class="bar-positive">
-        <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
+    </div>
+
+    <ion-footer-bar class="bar-positive bar-footer">
         <button ng-click="newLockup()" class="button button-icon icon ion-plus-round"></button>
+        <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
     </ion-footer-bar>
 
     <script id="new-lockup.html" type="text/ng-template">
@@ -62,7 +69,7 @@
           <h1 class="title">New Lockup</h1>
         </ion-header-bar>
         <ion-content>
-          <div class="list">
+          <div class="list list-inset">
             <label class="item item-input">
               <input type="text" placeholder="Name" ng-model="lockup.name">
             </label>
@@ -71,9 +78,9 @@
             </label>
           </div>
         </ion-content>
-        <ion-footer-bar class="bar-assertive">
-          <button class="button" ng-click="submitLockup(lockup)">Submit</button>
+        <ion-footer-bar class="bar-dark">
           <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>
+          <button class="button button-icon icon ion-checkmark-round" ng-click="submitLockup(lockup)"></button>
         </ion-footer-bar>
       </div>
     </script>
@@ -81,18 +88,46 @@
      <script id="lockup-info.html" type="text/ng-template">
       <div class="modal">
         <ion-header-bar class="bar-dark">
-          <h1 class="title">Lockup info</h1>
+          <h1 class="title">Lockup Info</h1>
         </ion-header-bar>
         <ion-content>
-          <ion-list>
-            <ion-item>Name: {{currentLockup.name}}</ion-item>
-            <ion-item>Address: {{currentLockup.address}}</ion-item>
-            <ion-item>Coordinates: {{currentLockup.location.coordinates}}</ion-item>
-            <ion-item>Created by: {{lockup.createdBy}}</ion-item>
-          </ion-list>
+          <div class="card">
+            <div class="item item-divider">
+              Name
+            </div>
+            <div class="item item-text-wrap">
+              {{currentLockup.name}}
+            </div>
+            <div class="item item-divider">
+              Address
+            </div>
+            <div class="item item-text-wrap">
+              {{currentLockup.address}}
+            </div>
+            <!--<div class="item item-divider">
+              Location
+            </div>
+            <div class="item item-text-wrap">
+              <i class="icon ion-location"></i>
+              {{currentLockup.location.coordinates[1]}}, {{currentLockup.location.coordinates[0]}}
+            </div>-->
+            <div class="item item-divider">
+              Number of lockups
+            </div>
+            <div class="item item-text-wrap">
+              {{currentLockup.rackAmount}}
+            </div>
+            <div class="item item-divider">
+              Created by
+            </div>
+            <div class="item item-text-wrap">
+              {{currentLockup.createdBy}}
+            </div>
+          </div>
         </ion-content>
-        <ion-footer-bar class="bar-assertive">
-          <button ng-click="closeInfoModal()" class="button button-icon icon ion-close-round"></button>
+        <ion-footer-bar class="bar-dark">
+          <button ng-click="closeLockupInfoModal()" class="button button-icon icon ion-close-round"></button>
+          <button class="button button-icon icon ion-alert-circled"></button>
         </ion-footer-bar>
       </div>
     </script>

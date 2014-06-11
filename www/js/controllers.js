@@ -108,17 +108,17 @@ angular.module('controllers', [])
           return currentMapArea.contains(coords);
         });
 
-        /* Logic for caching markers already on the map (doesn't work yet) */
+         // Logic for caching markers already on the map (doesn't work yet) 
 
-        // if (!$scope.lockups) {
-        //   $scope.lockups = data;
-        // } else {
-        //   var newData = _.filter(data, function(lockup) {
-        //     var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
-        //     return currentMapArea.contains(coords);
-        //   });
-        //   $scope.lockups.push(newData);
-        // };
+        /*if (!$scope.lockups) {
+          $scope.lockups = data;
+        } else {
+          var newData = _.filter(data, function(lockup) {
+            var coords = new google.maps.LatLng(lockup.coordinates[1], lockup.coordinates[0]);
+            return currentMapArea.contains(coords);
+          });
+          $scope.lockups.push(newData);
+        };*/
 
 
         console.log('Number of objects in $scope.lockups', $scope.lockups.length);
@@ -171,28 +171,85 @@ angular.module('controllers', [])
 
   $scope.submitLockup = function() {
     Lockup.submit($scope.lockup, function(data) {
-      $scope.lockups.push(data);
+      if (data.name === "ValidationError") {
+        $ionicLoading.show({
+          template: 'Lockup creation failed',
+          duration: 800,
+          noBackdrop: true
+        });
+      } else {
+        $ionicLoading.show({
+          template: 'Lockup created',
+          duration: 800,
+          noBackdrop: true
+        });
+        $scope.lockups.push(data);
+        $scope.modal.hide();
+        $scope.lockup = {
+          name: "",
+          address: "",
+          location: {
+            type: "Point",
+            coordinates: []
+          },
+          rackAmount: 1,
+          createdBy: "User",
+        };
+      }
+    }, function(err) {
+      console.log("Lockup not created!", err);
     });
-    $scope.modal.hide();
-    $scope.lockup = {
-      name: "",
-      address: "",
-      location: {
-        type: "Point",
-        coordinates: []
-      },
-      rackAmount: 1,
-      createdBy: "User",
-    };
   };
 
-  $scope.closeInfoModal = function() {
-    $scope.infoModal.hide();
-  }
+  $scope.closeLockupInfoModal = function() {
+      $scope.infoModal.hide();
+      // delete $scope.currentLockup;
+      $scope.currentLockup = {};
+      console.log("$scope.currentLockup: ", $scope.currentLockup);
+  };
 
-  $scope.markerInfo = function($markerModel) {
+  // you must set data-tap-disabled to false, otherwise users can only open
+  // one lockup modal and the app stops functioning.
+  $scope.openLockupInfoModal = function($markerModel) {
     $scope.currentLockup = $markerModel;
+    console.log("$scope.currentLockup: ", $scope.currentLockup);
     $scope.infoModal.show();
   };
+
+  // ===========================================================================
+  // 
+
+  // $scope.lockupsEvents = {
+  //   mousedown: function(marker, eventName, lockup) {
+  //     console.log("Modal window lockup: ", lockup);
+  //     openLockupInfoModal(lockup);
+  //   }
+  // };
+
+  // var openLockupInfoModal = function(lockup) {
+  //   $scope.currentLockup = lockup;
+  //   console.log("$scope.currentLockup: ", $scope.currentLockup);
+  //   $scope.infoModal.show();
+  // };
+
+  // ===========================================================================
+  // $scope.lockups = [ { _id: 1,
+  //   name: '116 2ND AVE',
+  //   address: '116 2ND AVE, New York, NY 10003, USA',
+  //   rackAmount: 1,
+  //   createdBy: 'NYCDOT',
+  //   location: { type: 'Point', coordinates: [ -73.987842, 40.727731 ] } },
+  // { _id: 2,
+  //   name: '120 2ND AVE',
+  //   address: '120 2ND AVE, New York, NY 10003, USA',
+  //   rackAmount: 1,
+  //   createdBy: 'NYCDOT',
+  //   location: { type: 'Point', coordinates: [ -73.98764, 40.727999 ] } },
+  // { _id: 3,
+  //   name: '122 2ND AVE',
+  //   address: '122 2ND AVE, New York, NY 10003, USA',
+  //   rackAmount: 2,
+  //   createdBy: 'NYCDOT',
+  //   location: { type: 'Point', coordinates: [ -73.987593, 40.728061 ] } } ]
 
 }])
