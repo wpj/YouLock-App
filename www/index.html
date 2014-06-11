@@ -33,25 +33,69 @@
   </head>
   <body ng-app="lockupFront" ng-controller="MapCtrl">
 
-    <div id="map-container">
-      
-      <google-map
-        center="map.center"
-        zoom="map.zoom"
-        draggable="true"
-        options="map.options"
-        events="map.events"
-        control="map.control"
-        pan="true"
-        >
-        <markers models="lockups" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16}"></markers>
-      </google-map>
+      <div id="map-container">
+        
+        <google-map
+          center="map.center"
+          zoom="map.zoom"
+          draggable="true"
+          options="map.options"
+          events="map.events"
+          control="map.control"
+          pan="true"
+          >
+          <markers models="lockups" click="markerInfo" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16}">
+              <!-- <window coords="map.center"></window> -->
+          </markers>
+        </google-map>
 
-    </div>
+      </div>
 
     <ion-footer-bar class="bar-positive">
-        <a ng-click="getPosition()" class="button button-icon icon ion-navigate"></a>
+        <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
+        <button ng-click="newLockup()" class="button button-icon icon ion-plus-round"></button>
     </ion-footer-bar>
+
+    <script id="new-lockup.html" type="text/ng-template">
+      <div class="modal">
+        <ion-header-bar class="bar-dark">
+          <h1 class="title">New Lockup</h1>
+        </ion-header-bar>
+        <ion-content>
+          <div class="list">
+            <label class="item item-input">
+              <input type="text" placeholder="Name" ng-model="lockup.name">
+            </label>
+            <label class="item item-input">
+              <input type="text" placeholder="Address" ng-model="lockup.address">
+            </label>
+          </div>
+        </ion-content>
+        <ion-footer-bar class="bar-assertive">
+          <button class="button" ng-click="submitLockup(lockup)">Submit</button>
+          <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>
+        </ion-footer-bar>
+      </div>
+    </script>
+
+     <script id="lockup-info.html" type="text/ng-template">
+      <div class="modal">
+        <ion-header-bar class="bar-dark">
+          <h1 class="title">Lockup info</h1>
+        </ion-header-bar>
+        <ion-content>
+          <ion-list>
+            <ion-item>Name: {{currentLockup.name}}</ion-item>
+            <ion-item>Address: {{currentLockup.address}}</ion-item>
+            <ion-item>Coordinates: {{currentLockup.location.coordinates}}</ion-item>
+            <ion-item>Created by: {{lockup.createdBy}}</ion-item>
+          </ion-list>
+        </ion-content>
+        <ion-footer-bar class="bar-assertive">
+          <button ng-click="closeInfoModal()" class="button button-icon icon ion-close-round"></button>
+        </ion-footer-bar>
+      </div>
+    </script>
     
   </body>
 </html>

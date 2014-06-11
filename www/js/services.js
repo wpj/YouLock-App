@@ -16,6 +16,13 @@ angular.module('services', [])
           NELat: NELat
         }
       });
+    },
+    submit: function(lockup, callback) {
+      $http.post('http://localhost:8080/api/lockups', lockup).success(function(data) {
+        callback(data);
+      }).error(function(error) {
+        console.log("Lockup submission failed.", error);
+      })
     }
   };
 

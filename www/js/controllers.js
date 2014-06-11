@@ -1,12 +1,13 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$ionicLoading', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $cordovaGeolocation, Lockup, underscore){
+.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $ionicModal, $cordovaGeolocation, Lockup, underscore, $log){
   $scope.map = {
     control: {},
     center: {
       latitude: 50.677380, 
       longitude: -73.976949
     },
+    // center: currentLocation,
     zoom: 16,
     options: {
       disableDefaultUI: true
@@ -34,15 +35,16 @@ angular.module('controllers', [])
 
   var getPosition = function() {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
-      mapCenter = {latitude: position.coords.latitude, longitude: position.coords.longitude};
+      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     });
   };
 
-  var mapCenter = angular.element(document).ready(function() {
+  angular.element(document).ready(function() {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       // console.log(position);
-      console.log({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-      return { latitude: position.coords.latitude, longitude: position.coords.longitude };
+      currentLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude }
+      $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
+      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     }, function(err) {
       console.log('Unable to get location: ', error.message);
     });
@@ -65,6 +67,8 @@ angular.module('controllers', [])
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+      $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
+      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
       $scope.map.zoom = 17;
       $ionicLoading.hide();
       return position.coords;
@@ -117,7 +121,7 @@ angular.module('controllers', [])
         // };
 
 
-        console.log('Currently in $scope.lockups', $scope.lockups.length);
+        console.log('Number of objects in $scope.lockups', $scope.lockups.length);
         console.log('$scope.lockups: ',$scope.lockups);
         console.log('Lockups received: ', data.length);
         console.log('Transmitted data: ', data);
@@ -130,5 +134,65 @@ angular.module('controllers', [])
   var getMapBounds = function(map) {
     return map.getBounds();
   }
+
+  $ionicModal.fromTemplateUrl('new-lockup.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $ionicModal.fromTemplateUrl('lockup-info.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.infoModal = modal;
+  });
+
+  $scope.newLockup = function() {
+    getPosition();
+    $scope.modal.show();
+  };
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  };
+
+  $scope.lockup = {
+    name: "",
+    address: "",
+    location: {
+      type: "Point",
+      coordinates: []
+    },
+    rackAmount: 1,
+    createdBy: "User",
+  };
+
+  $scope.submitLockup = function() {
+    Lockup.submit($scope.lockup, function(data) {
+      $scope.lockups.push(data);
+    });
+    $scope.modal.hide();
+    $scope.lockup = {
+      name: "",
+      address: "",
+      location: {
+        type: "Point",
+        coordinates: []
+      },
+      rackAmount: 1,
+      createdBy: "User",
+    };
+  };
+
+  $scope.closeInfoModal = function() {
+    $scope.infoModal.hide();
+  }
+
+  $scope.markerInfo = function($markerModel) {
+    $scope.currentLockup = $markerModel;
+    $scope.infoModal.show();
+  };
 
 }])
