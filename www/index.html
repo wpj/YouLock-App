@@ -34,12 +34,12 @@
   <body ng-app="lockupFront" ng-controller="MapCtrl">
 
     <ion-header-bar class="bar bar-header item-input-inset">
-      <label class="item-input-wrapper">
-        <i class="icon ion-ios7-search placeholder-icon"></i>
-        <input type="search" placeholder="Search by address" ng-model="searchText">
-      </label>
-      <button class="button button-clear" ng-show="searchIsActive()" ng-click="resetSearch()">
-      Cancel</button>
+        <label class="item-input-wrapper">
+          <i class="icon ion-ios7-search placeholder-icon"></i>
+          <input type="search" placeholder="Search by address" ng-model="searchText" ng-submit="geocode()">
+        </label>
+        <button class="button button-clear" ng-show="searchIsActive()"  ng-click="resetSearch()">
+        Cancel</button>
     </ion-header-bar>
 
     <div id="map-container" data-tap-disabled="true">

@@ -67,8 +67,8 @@ angular.module('controllers', [])
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-      $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
-      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+      // $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
+      // $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
       $scope.map.zoom = 17;
       $ionicLoading.hide();
       return position.coords;
@@ -227,11 +227,26 @@ angular.module('controllers', [])
   };
 
   $scope.geocode = function() {
-    Geocoder.geocode({
-      address: $scope.searchText
-    }, function(data) {
-      console.log(data);
-    });
+    if ($scope.searchText.length) {
+      $ionicLoading.show({
+        content: '<i class="icon ion-loading-c"></i>',
+        noBackdrop: true,
+        showBackdrop: false
+      });
+
+      console.log($scope.map.center);
+      var Geocoder = new google.maps.Geocoder();
+      Geocoder.geocode({
+        address: $scope.searchText
+      }, function(data) {
+        $ionicLoading.hide();
+        $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A
+        };
+        console.log($scope.map.center);
+      }, function(err) {
+        console.log("Error occurred: ", err);
+      });
+    };
   };
 
   // ===========================================================================
