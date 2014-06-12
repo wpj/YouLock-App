@@ -216,6 +216,24 @@ angular.module('controllers', [])
     $scope.infoModal.show();
   };
 
+  $scope.searchText = "";
+
+  $scope.searchIsActive = function() {
+    return $scope.searchText.length;
+  };
+
+  $scope.resetSearch = function() {
+    $scope.searchText = "";
+  };
+
+  $scope.geocode = function() {
+    Geocoder.geocode({
+      address: $scope.searchText
+    }, function(data) {
+      console.log(data);
+    });
+  };
+
   // ===========================================================================
   // 
 

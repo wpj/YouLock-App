@@ -36,11 +36,10 @@
     <ion-header-bar class="bar bar-header item-input-inset">
       <label class="item-input-wrapper">
         <i class="icon ion-ios7-search placeholder-icon"></i>
-        <input type="search" placeholder="Search by address">
+        <input type="search" placeholder="Search by address" ng-model="searchText">
       </label>
-      <button class="button button-clear">
-        Cancel
-      </button>
+      <button class="button button-clear" ng-show="searchIsActive()" ng-click="resetSearch()">
+      Cancel</button>
     </ion-header-bar>
 
     <div id="map-container" data-tap-disabled="true">
@@ -87,7 +86,7 @@
 
      <script id="lockup-info.html" type="text/ng-template">
       <div class="modal">
-        <ion-header-bar class="bar-dark">
+        <ion-header-bar class="bar-energized">
           <h1 class="title">Lockup Info</h1>
         </ion-header-bar>
         <ion-content>
@@ -125,7 +124,7 @@
             </div>
           </div>
         </ion-content>
-        <ion-footer-bar class="bar-dark">
+        <ion-footer-bar class="bar-energized">
           <button ng-click="closeLockupInfoModal()" class="button button-icon icon ion-close-round"></button>
           <button class="button button-icon icon ion-alert-circled"></button>
         </ion-footer-bar>
