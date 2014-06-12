@@ -135,14 +135,14 @@ angular.module('controllers', [])
     return map.getBounds();
   }
 
-  $ionicModal.fromTemplateUrl('new-lockup.html', {
+  $ionicModal.fromTemplateUrl('templates/new-lockup.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
   });
 
-  $ionicModal.fromTemplateUrl('lockup-info.html', {
+  $ionicModal.fromTemplateUrl('templates/lockup-info.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {

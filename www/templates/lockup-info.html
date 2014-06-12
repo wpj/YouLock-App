@@ -1,0 +1,44 @@
+<div class="modal">
+  <ion-header-bar class="bar-energized">
+    <h1 class="title">Lockup Info</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div class="card">
+      <div class="item item-divider">
+        Name
+      </div>
+      <div class="item item-text-wrap">
+        {{currentLockup.name}}
+      </div>
+      <div class="item item-divider">
+        Address
+      </div>
+      <div class="item item-text-wrap">
+        {{currentLockup.address}}
+      </div>
+      <!--<div class="item item-divider">
+        Location
+      </div>
+      <div class="item item-text-wrap">
+        <i class="icon ion-location"></i>
+        {{currentLockup.location.coordinates[1]}}, {{currentLockup.location.coordinates[0]}}
+      </div>-->
+      <div class="item item-divider">
+        Number of lockups
+      </div>
+      <div class="item item-text-wrap">
+        {{currentLockup.rackAmount}}
+      </div>
+      <div class="item item-divider">
+        Created by
+      </div>
+      <div class="item item-text-wrap">
+        {{currentLockup.createdBy}}
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar-energized">
+    <button ng-click="closeLockupInfoModal()" class="button button-icon icon ion-close-round"></button>
+    <button class="button button-icon icon ion-alert-circled"></button>
+  </ion-footer-bar>
+</div>
