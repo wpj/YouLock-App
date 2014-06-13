@@ -1,10 +1,10 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $ionicModal, $cordovaGeolocation, Lockup, underscore, $log){
+.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, Lockup, underscore, $log){
   $scope.map = {
     control: {},
     center: {
-      latitude: 50.677380, 
+      latitude: 40.671475, 
       longitude: -73.976949
     },
     // center: currentLocation,
@@ -259,6 +259,30 @@ angular.module('controllers', [])
       $scope.reportLockupEnabled = true;
     };
   };
+
+  $scope.showReportPopup = function() {
+   var reportPopup = $ionicPopup.show({
+     title: 'Report Lockup',
+     // template: '<b>Test</b>',
+     templateUrl: 'templates/report_lockup.html',
+     buttons: [
+      { text: 'Cancel' },
+      {
+        text: '<b>Submit</b>',
+        type: 'button-positive'
+      }
+     ]
+   });
+   reportPopup.then(function(res) {
+     if(res) {
+       console.log('Report submitted.');
+     } else {
+       console.log('Report cancelled.');
+     }
+   });
+  };
+
+  $scope.lockupReport = "";
 
   // ===========================================================================
   // 
