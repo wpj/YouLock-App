@@ -203,9 +203,8 @@ angular.module('controllers', [])
 
   $scope.closeLockupInfoModal = function() {
       $scope.infoModal.hide();
-      // delete $scope.currentLockup;
       $scope.currentLockup = {};
-      console.log("$scope.currentLockup: ", $scope.currentLockup);
+      $scope.reportLockupEnabled = false;
   };
 
   // you must set data-tap-disabled to false, otherwise users can only open
@@ -246,6 +245,18 @@ angular.module('controllers', [])
       }, function(err) {
         console.log("Error occurred: ", err);
       });
+    };
+  };
+
+  $scope.toggleReportStatus = function() {
+    toggleReportStatus();
+  }
+
+  var toggleReportStatus = function() {
+    if ($scope.reportLockupEnabled) {
+      $scope.reportLockupEnabled = false;
+    } else {
+      $scope.reportLockupEnabled = true;
     };
   };
 
