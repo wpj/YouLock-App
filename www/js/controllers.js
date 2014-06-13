@@ -261,28 +261,42 @@ angular.module('controllers', [])
   };
 
   $scope.showReportPopup = function() {
-   var reportPopup = $ionicPopup.show({
-     title: 'Report Lockup',
-     // template: '<b>Test</b>',
-     templateUrl: 'templates/report_lockup.html',
-     buttons: [
-      { text: 'Cancel' },
-      {
-        text: '<b>Submit</b>',
-        type: 'button-positive'
-      }
-     ]
-   });
-   reportPopup.then(function(res) {
-     if(res) {
-       console.log('Report submitted.');
-     } else {
-       console.log('Report cancelled.');
-     }
-   });
-  };
+    // For whatever reason, this has to be an object. It can't be a string.
+    $scope.lockupReport = {};
 
-  $scope.lockupReport = "";
+    var reportPopup = $ionicPopup.show({
+      template: '<textarea class="lockupReport" ng-model="lockupReport.reason" rows="5" placeholder="Reason for reporting"></textarea>',
+      title: 'Report Lockup',
+      scope: $scope,
+      buttons: [
+        { 
+          text: 'Cancel',
+          onTap: function(e) {
+            return 'Cancelled';
+          }
+        },
+        {
+          text: '<b>Submit</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            if (!$scope.lockupReport.reason) {
+              // only allow the user to submit report if they've entered text
+              e.preventDefault();
+            } else {
+              //////////
+              // place report submission logic here
+              console.log($scope.lockupReport.reason);
+              //////////
+              return $scope.lockupReport.reason;
+            }
+          }
+        },
+      ]
+    });
+    // reportPopup.then(function(res) {
+    //   console.log(res);
+    // });
+   };
 
   // ===========================================================================
   // 
