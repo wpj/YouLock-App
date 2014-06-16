@@ -1,10 +1,10 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', 'Lockup', function($scope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, Lockup, underscore, $log){
+.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', 'Lockup', 'Report', function($scope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, Lockup, Report, underscore, $log) {
   $scope.map = {
     control: {},
     center: {
-      latitude: 40.671475, 
+      latitude: 40.671475,
       longitude: -73.976949
     },
     // center: currentLocation,
@@ -42,7 +42,7 @@ angular.module('controllers', [])
   angular.element(document).ready(function() {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       // console.log(position);
-      currentLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude }
+      currentLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     }, function(err) {
@@ -97,7 +97,7 @@ angular.module('controllers', [])
     
     var SWLng = southWest.lng();
     var SWLat = southWest.lat();
-    var NELng = northEast.lng(); 
+    var NELng = northEast.lng();
     var NELat = northEast.lat();
 
     Lockup.findInMapArea(SWLng, SWLat, NELng, NELat)
@@ -133,7 +133,7 @@ angular.module('controllers', [])
 
   var getMapBounds = function(map) {
     return map.getBounds();
-  }
+  };
 
   $ionicModal.fromTemplateUrl('templates/new-lockup.html', {
     scope: $scope,
@@ -245,31 +245,33 @@ angular.module('controllers', [])
       }, function(err) {
         console.log("Error occurred: ", err);
       });
-    };
+    }
   };
 
   $scope.toggleReportStatus = function() {
     toggleReportStatus();
-  }
+  };
 
   var toggleReportStatus = function() {
     if ($scope.reportLockupEnabled) {
       $scope.reportLockupEnabled = false;
     } else {
       $scope.reportLockupEnabled = true;
-    };
+    }
   };
 
   $scope.showReportPopup = function() {
     // For whatever reason, this has to be an object. It can't be a string.
-    $scope.lockupReport = {};
+    $scope.lockupReport = {
+      lockupId: $scope.currentLockup._id
+    };
 
     var reportPopup = $ionicPopup.show({
-      template: '<textarea class="lockupReport" ng-model="lockupReport.reason" rows="5" placeholder="Reason for reporting"></textarea>',
+      template: '<textarea class="lockupReport" ng-model="lockupReport.reportDescription" rows="5" placeholder="Reason for reporting"></textarea>',
       title: 'Report Lockup',
       scope: $scope,
       buttons: [
-        { 
+        {
           text: 'Cancel',
           onTap: function(e) {
             return 'Cancelled';
@@ -279,15 +281,12 @@ angular.module('controllers', [])
           text: '<b>Submit</b>',
           type: 'button-positive',
           onTap: function(e) {
-            if (!$scope.lockupReport.reason) {
+            if (!$scope.lockupReport.reportDescription) {
               // only allow the user to submit report if they've entered text
               e.preventDefault();
             } else {
-              //////////
-              // place report submission logic here
-              console.log($scope.lockupReport.reason);
-              //////////
-              return $scope.lockupReport.reason;
+              submitReport();
+              return $scope.lockupReport;
             }
           }
         },
@@ -297,6 +296,14 @@ angular.module('controllers', [])
     //   console.log(res);
     // });
    };
+
+  var submitReport = function() {
+    Report.submit($scope.lockupReport, function(report) {
+      console.log("Report submitted!", report);
+    }, function(error) {
+      console.log(error);
+    });
+  };
 
   // ===========================================================================
   // 
@@ -334,4 +341,4 @@ angular.module('controllers', [])
   //   createdBy: 'NYCDOT',
   //   location: { type: 'Point', coordinates: [ -73.987593, 40.728061 ] } } ]
 
-}])
+}]);
