@@ -1,13 +1,8 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', 'Lockup', 'Report', function($scope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, Lockup, Report, underscore, $log) {
+.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, underscore, $log) {
   $scope.map = {
     control: {},
-    center: {
-      latitude: 40.671475,
-      longitude: -73.976949
-    },
-    // center: currentLocation,
     zoom: 16,
     options: {
       disableDefaultUI: true
@@ -38,18 +33,6 @@ angular.module('controllers', [])
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     });
   };
-
-  angular.element(document).ready(function() {
-    $cordovaGeolocation.getCurrentPosition().then(function(position) {
-      // console.log(position);
-      currentLocation = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-      $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
-      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-    }, function(err) {
-      console.log('Unable to get location: ', error.message);
-    });
-    // console.log(mapCenter);
-  });
 
   $scope.getPosition = function() {
 
@@ -121,10 +104,11 @@ angular.module('controllers', [])
         };*/
 
 
-        console.log('Number of objects in $scope.lockups', $scope.lockups.length);
-        console.log('$scope.lockups: ',$scope.lockups);
-        console.log('Lockups received: ', data.length);
-        console.log('Transmitted data: ', data);
+        // Server data logging
+        // console.log('Number of objects in $scope.lockups', $scope.lockups.length);
+        // console.log('$scope.lockups: ',$scope.lockups);
+        // console.log('Lockups received: ', data.length);
+        // console.log('Transmitted data: ', data);
       })
       .error(function(err, status) {
         console.log(err, status);
@@ -233,7 +217,6 @@ angular.module('controllers', [])
         showBackdrop: false
       });
 
-      console.log($scope.map.center);
       var Geocoder = new google.maps.Geocoder();
       Geocoder.geocode({
         address: $scope.searchText
@@ -241,22 +224,11 @@ angular.module('controllers', [])
         $ionicLoading.hide();
         $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A
         };
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
         console.log($scope.map.center);
       }, function(err) {
         console.log("Error occurred: ", err);
       });
-    }
-  };
-
-  $scope.toggleReportStatus = function() {
-    toggleReportStatus();
-  };
-
-  var toggleReportStatus = function() {
-    if ($scope.reportLockupEnabled) {
-      $scope.reportLockupEnabled = false;
-    } else {
-      $scope.reportLockupEnabled = true;
     }
   };
 

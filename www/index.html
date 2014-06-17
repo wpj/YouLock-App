@@ -2,7 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, height=device-height">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -12,15 +13,16 @@
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
+    <!-- google maps API -->
+    <script src='http://maps.googleapis.com/maps/api/js?sensor=false'></script>
+
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- third party libraries -->
-    <script src='http://maps.googleapis.com/maps/api/js?sensor=false'></script>
     <script src="lib/underscore/underscore.js"></script>
     <script src="lib/angular-google-maps/dist/angular-google-maps.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.js"></script>
-    <script src="lib/angular-resource/angular-resource.js"></script>
 
     <!-- your app's js -->
     <script src="js/controllers.js"></script>
@@ -33,37 +35,46 @@
   </head>
   <body ng-app="lockupFront" ng-controller="MapCtrl">
 
-    <form ng-submit="geocode()">
-      <div class="bar bar-header item-input-inset">
-        <label class="item-input-wrapper">
-          <i class="icon ion-search placeholder-icon"></i>
-          <input type="search" placeholder="Search by address" autocapitalize="off" autocorrect="off" ng-model="searchText">
-          <i class="icon ion-close-round" ng-show="searchIsActive()" ng-mousedown="resetSearch()"></i>
-        </label>
-        <!-- <button type="submit" class="button button-clear" ng-disabled="!searchText.length" ng-mousedown="geocode()">Search</button> -->
-        <button type="submit" class="button button-clear" ng-disabled="!searchText.length">Search</button>
-      </div>
-    </form>
-
-    <div id="map-container" data-tap-disabled="true">
-      
-      <google-map
-        center="map.center"
-        zoom="map.zoom"
-        draggable="true"
-        options="map.options"
-        events="map.events"
-        control="map.control"
-        >
-        <markers models="lockups" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}">
-      </google-map>
-
-    </div>
-
-    <ion-footer-bar class="bar-positive bar-footer">
-        <button ng-click="newLockup()" class="button button-icon icon ion-plus-round"></button>
-        <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
-    </ion-footer-bar>
+    <!-- <div ng-init="getPosition()"> -->
+      <!-- <div ng-if="map.center"> -->
+        <form ng-submit="geocode()">
+          <ion-header-bar class="item-input-inset">
+            <!-- <div> -->
+              <label class="item-input-wrapper">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input id="searchBar" type="search" placeholder="Search by address" autocapitalize="off" autocorrect="off" ng-model="searchText">
+                <i class="icon ion-close-round" ng-show="searchIsActive()" data-tap-disabled="true" ng-mousedown="resetSearch()"></i>
+              </label>
+              <button type="submit" class="button button-clear" ng-disabled="!searchText.length">Search</button>
+            <!-- </div> -->
+          </ion-header-bar>
+        </form>
+        
+        <div id="map-container" data-tap-disabled="true">
+          
+          <div ng-init="getPosition()">
+            <div ng-if="map.center">
+              <google-map
+                center="map.center"
+                zoom="map.zoom"
+                draggable="true"
+                options="map.options"
+                events="map.events"
+                control="map.control"
+                >
+                <markers models="lockups" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}">
+              </google-map>
+            </div>
+          </div>
+        
+        </div>
+        
+        <ion-footer-bar class="bar-positive bar-footer">
+            <button ng-click="newLockup()" class="button button-icon icon ion-plus-round"></button>
+            <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
+        </ion-footer-bar>
+      <!-- </div> -->
+    <!-- </div> -->
     
   </body>
 </html>

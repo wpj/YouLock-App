@@ -1,4 +1,4 @@
-angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'ngResource'])
+angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova'])
 
 .run(['$ionicPlatform', function($ionicPlatform){
   $ionicPlatform.ready(function() {
@@ -11,4 +11,4 @@ angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directive
       StatusBar.styleDefault();
     }
   });
-}])
+}]);

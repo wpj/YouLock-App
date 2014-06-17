@@ -1,6 +1,6 @@
 angular.module('services', [])
 
-.factory('Lockup', ['$resource', '$http', function($resource, $http){
+.factory('Lockup', ['$http', function($http){
 
   var Lockup = {
     findAll: function() {
