@@ -10,7 +10,11 @@
   width: 100%;
 }
 
-.lockupReport {
+/*.lockupReport {
+  resize: none;
+}*/
+
+textarea {
   resize: none;
 }
 

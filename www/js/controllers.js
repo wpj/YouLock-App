@@ -132,7 +132,11 @@ angular.module('controllers', [])
   // ===========================================================================
 
   $scope.newLockup = function() {
-    getPosition();
+    geolocate(function(position) {
+      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+    }, function(err) {
+      if (err) console.log(err);
+    });
     $scope.modal.show();
   };
 
@@ -145,6 +149,26 @@ angular.module('controllers', [])
     },
     rackAmount: 1,
     createdBy: "User",
+  };
+
+  $scope.processLocation = function() {
+    if (!$scope.lockup.location.coordinates) {
+      geolocate(function(position) {
+        $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+      }, function(err) {
+        if (err) console.log(err);
+      });
+    } else {
+      var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
+      if (String($scope.lockup.location.coordinates).match(coordRegexp)) {
+        // still need to reverse-geocode this
+        $scope.searchText = $scope.lockup.location.coordinates;
+      } else if ($scope.searchText.length) {
+
+      } else {
+        console.log("Error");
+      }
+    }
   };
 
   $scope.submitLockup = function() {
@@ -230,7 +254,16 @@ angular.module('controllers', [])
     $scope.searchText = "";
   };
 
-  $scope.geocode = function() {
+  var geocode = function(callback) {
+    var Geocoder = new google.maps.Geocoder();
+    Geocoder.geocode({
+      address: $scope.searchText
+    }, function(results, status) {
+      callback(results, status);
+    });
+  };
+
+  $scope.searchLocation = function() {
     if ($scope.searchText.length) {
       $ionicLoading.show({
         content: '<i class="icon ion-loading-c"></i>',
@@ -238,15 +271,16 @@ angular.module('controllers', [])
         showBackdrop: false
       });
 
-      var Geocoder = new google.maps.Geocoder();
-      Geocoder.geocode({
-        address: $scope.searchText
-      }, function(data) {
-        $ionicLoading.hide();
-        $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
-      }, function(err) {
-        console.log("Error occurred: ", err);
+      geocode(function(data, status) {
+        if (status === "OK") {
+          $ionicLoading.hide();
+          $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
+          if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
+        } else {
+          // MAKE A BETTER UI FEATURE HERE
+          $ionicLoading.hide();
+          console.log("Not found!");
+        }
       });
     }
   };

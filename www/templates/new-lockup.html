@@ -5,15 +5,23 @@
   <ion-content>
     <form>
       <div class="list list-inset">
+        <label>Location</label>
         <label class="item item-input">
           <input type="text" placeholder="Location" ng-model="searchText">
-          <i class="icon ion-location geocodeAddressIcon" ng-mousedown="geocode()"></i>
+          <i class="icon ion-location geocodeAddressIcon" ng-mousedown="processLocation()"></i>
         </label>
+        <label>Description</label>
         <label class="item item-input">
-          <input type="text" placeholder="Name" ng-model="lockup.name">
+          <textarea placeholder="Description" ng-model="lockup.description" rows="6"></textarea>
         </label>
       </div>
     </form>
+    Name: {{lockup.name}} <br>
+    Description: {{ lockup.name }} <br>
+    Location: {{lockup.location.coordinates}} <br>
+    Address: {{lockup.address}} <br>
+    Amount: {{lockup.rackAmount}} <br>
+    Created by: {{lockup.createdBy}} <br>
   </ion-content>
   <ion-footer-bar class="bar-dark">
     <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>
