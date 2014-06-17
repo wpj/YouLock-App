@@ -10,27 +10,24 @@ angular.module('controllers', [])
     idKey: '_id',
     events: {
       idle: function(map, event, eventArgs) {
-        console.log('Idle event triggered');
         searchInMapBounds(map);
       }
-      // dragend: function(map, event, eventArgs) {
-      //   console.log('Done dragging');
-      //   searchInMapBounds(map);
-      // },
-      // zoom_changed: function(map, event, eventArgs) {
-      //   searchInMapBounds(map);
-      // }
-      // tilesloaded: function (map, eventName, originalEventArgs) {
-      //   searchInMapBounds(map);
-      // }
-      // click: function(map, eventName, originalEventArgs){},
-      // bounds_changed: function(map, eventName, originalEventArgs) {}
     }
   };
 
   var getPosition = function() {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+    });
+  };
+
+  showLocationErrorAlert = function() {
+    var locationErrorPopup = $ionicPopup.alert({
+      title: 'Not found!',
+      template: 'Your location couldn\'t be found.'
+    });
+    locationErrorPopup.then(function(res) {
+      console.log("Acknowledged.");
     });
   };
 
@@ -50,13 +47,13 @@ angular.module('controllers', [])
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-      // $scope.currentLocation = [position.coords.latitude, position.coords.longitude];
-      // $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
       $scope.map.zoom = 17;
       $ionicLoading.hide();
       return position.coords;
     }, function(err) {
-      alert('Unable to get location: ' + error.message);
+      console.log("Position not found.");
+      $ionicLoading.hide();
+      showLocationErrorAlert();
     });
   };
 
@@ -222,10 +219,8 @@ angular.module('controllers', [])
         address: $scope.searchText
       }, function(data) {
         $ionicLoading.hide();
-        $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A
-        };
+        $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
-        console.log($scope.map.center);
       }, function(err) {
         console.log("Error occurred: ", err);
       });
@@ -264,9 +259,6 @@ angular.module('controllers', [])
         },
       ]
     });
-    // reportPopup.then(function(res) {
-    //   console.log(res);
-    // });
    };
 
   var submitReport = function() {
