@@ -10,10 +10,6 @@
   width: 100%;
 }
 
-/*.lockupReport {
-  resize: none;
-}*/
-
 textarea {
   resize: none;
 }
@@ -23,6 +19,6 @@ textarea {
 }
 
 .geocodeAddressIcon {
-  font-size: 1.5em;
+  /*font-size: 1.5em;*/
   color: red;
 }

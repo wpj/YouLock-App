@@ -143,30 +143,69 @@ angular.module('controllers', [])
   $scope.lockup = {
     name: "",
     address: "",
+    description: "",
     location: {
       type: "Point",
       coordinates: []
     },
     rackAmount: 1,
-    createdBy: "User",
+    createdBy: "User"
+  };
+
+  $scope.locationQuery = {
+    text: ""
   };
 
   $scope.processLocation = function() {
-    if (!$scope.lockup.location.coordinates) {
-      geolocate(function(position) {
-        $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-      }, function(err) {
-        if (err) console.log(err);
+    // if (!$scope.lockup.location.coordinates.length) {
+    //   geolocate(function(position) {
+    //     $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+    //     if ($scope.lockupLocation.length) {
+    //       console.log("Geocoding.");
+    //       geocode($scope.lockupLocation, function(results, status) {
+    //         if (status === "OK") {
+    //           // $scope.lockup.address = results[0].
+    //           $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
+    //           $scope.lockupLocation = $scope.lockup.location.coordinates;
+    //         } else {
+    //           console.log("Location not found");
+    //         }
+    //       });
+    //     } else {
+    //         var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
+    //         if (String($scope.lockup.location.coordinates).match(coordRegexp)) {
+    //           // still need to reverse-geocode this
+    //           $scope.searchText = $scope.lockup.location.coordinates;
+    //       }
+    //     }
+    //   }, function(err) {
+    //     if (err) console.log(err);
+    //   });
+    // }
+
+    // console.log($scope.locationQuery.text);
+
+    if ($scope.locationQuery.text.length) {
+      // console.log("Geocoding.");
+      geocode($scope.locationQuery.text, function(results, status) {
+        if (status === "OK") {
+          // console.log(results[0].geometry.location);
+          $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
+          // console.log($scope.lockup.location.coordinates);
+          $scope.locationQuery.text = $scope.lockup.location.coordinates;
+          console.log($scope.locationQuery.text);
+          // $scope.$apply;
+          // console.log($scope.lockup);
+        } else {
+          console.log("Location not found");
+        }
       });
     } else {
+      console.log(String($scope.lockup.location.coordinates));
       var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
       if (String($scope.lockup.location.coordinates).match(coordRegexp)) {
         // still need to reverse-geocode this
-        $scope.searchText = $scope.lockup.location.coordinates;
-      } else if ($scope.searchText.length) {
-
-      } else {
-        console.log("Error");
+        $scope.locationQuery.text = $scope.lockup.location.coordinates;
       }
     }
   };
@@ -254,10 +293,10 @@ angular.module('controllers', [])
     $scope.searchText = "";
   };
 
-  var geocode = function(callback) {
+  var geocode = function(query, callback) {
     var Geocoder = new google.maps.Geocoder();
     Geocoder.geocode({
-      address: $scope.searchText
+      address: query
     }, function(results, status) {
       callback(results, status);
     });
@@ -271,7 +310,7 @@ angular.module('controllers', [])
         showBackdrop: false
       });
 
-      geocode(function(data, status) {
+      geocode($scope.searchText, function(data, status) {
         if (status === "OK") {
           $ionicLoading.hide();
           $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
