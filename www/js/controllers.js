@@ -20,9 +20,17 @@ angular.module('controllers', [])
 
   // Location processing
 
-  var getPosition = function() {
+  // var getPosition = function() {
+  //   $cordovaGeolocation.getCurrentPosition().then(function(position) {
+  //     $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+  //   });
+  // };
+
+  var geolocate = function(success, errCb) {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
-      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+      success(position);
+    }, function(err) {
+      errCb(err);
     });
   };
 
@@ -39,12 +47,11 @@ angular.module('controllers', [])
       showBackdrop: false
     });
 
-    $cordovaGeolocation.getCurrentPosition().then(function(position) {
+    geolocate(function(position) {
       console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       $scope.map.zoom = 17;
       $ionicLoading.hide();
-      return position.coords;
     }, function(err) {
       console.log("Position not found.");
       $ionicLoading.hide();
