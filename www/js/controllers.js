@@ -1,6 +1,9 @@
 angular.module('controllers', [])
 
 .controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, underscore, $log) {
+  
+  // map initialization
+
   $scope.map = {
     control: {},
     zoom: 16,
@@ -15,19 +18,11 @@ angular.module('controllers', [])
     }
   };
 
+  // Location processing
+
   var getPosition = function() {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-    });
-  };
-
-  showLocationErrorAlert = function() {
-    var locationErrorPopup = $ionicPopup.alert({
-      title: 'Not found!',
-      template: 'Your location couldn\'t be found.'
-    });
-    locationErrorPopup.then(function(res) {
-      console.log("Acknowledged.");
     });
   };
 
@@ -57,6 +52,16 @@ angular.module('controllers', [])
     });
   };
 
+  showLocationErrorAlert = function() {
+    var locationErrorPopup = $ionicPopup.alert({
+      title: 'Not found!',
+      template: 'Your location couldn\'t be found.'
+    });
+  };
+
+  // Pulling Lockups from server
+  // ===========================================================================
+
   var getAllLockups = function() {
     Lockup.findAll()
       .success(function(data) {
@@ -66,6 +71,10 @@ angular.module('controllers', [])
       .error(function(err, status) {
         console.log(error, status);
       });
+  };
+
+  var getMapBounds = function(map) {
+    return map.getBounds();
   };
 
   var searchInMapBounds = function(map) {
@@ -112,31 +121,12 @@ angular.module('controllers', [])
       });
   };
 
-  var getMapBounds = function(map) {
-    return map.getBounds();
-  };
-
-  $ionicModal.fromTemplateUrl('templates/new-lockup.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  $ionicModal.fromTemplateUrl('templates/lockup-info.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.infoModal = modal;
-  });
+  // Lockup submission
+  // ===========================================================================
 
   $scope.newLockup = function() {
     getPosition();
     $scope.modal.show();
-  };
-
-  $scope.closeModal = function() {
-    $scope.modal.hide();
   };
 
   $scope.lockup = {
@@ -182,11 +172,29 @@ angular.module('controllers', [])
     });
   };
 
-  $scope.closeLockupInfoModal = function() {
-      $scope.infoModal.hide();
-      $scope.currentLockup = {};
-      $scope.reportLockupEnabled = false;
+  // General modal logic
+  // ===========================================================================
+
+  $ionicModal.fromTemplateUrl('templates/new-lockup.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $ionicModal.fromTemplateUrl('templates/lockup-info.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.infoModal = modal;
+  });
+
+  $scope.closeModal = function() {
+    $scope.modal.hide();
   };
+
+  // Lockup info
+  // ===========================================================================
 
   // you must set data-tap-disabled to false, otherwise users can only open
   // one lockup modal and the app stops functioning.
@@ -195,6 +203,15 @@ angular.module('controllers', [])
     console.log("$scope.currentLockup: ", $scope.currentLockup);
     $scope.infoModal.show();
   };
+
+  $scope.closeLockupInfoModal = function() {
+      $scope.infoModal.hide();
+      $scope.currentLockup = {};
+      $scope.reportLockupEnabled = false;
+  };
+
+  // Search
+  // ===========================================================================
 
   $scope.searchText = "";
 
@@ -226,6 +243,9 @@ angular.module('controllers', [])
       });
     }
   };
+
+  // Reports
+  //============================================================================
 
   $scope.showReportPopup = function() {
     // For whatever reason, this has to be an object. It can't be a string.

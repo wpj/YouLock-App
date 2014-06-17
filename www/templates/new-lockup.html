@@ -3,14 +3,17 @@
     <h1 class="title">New Lockup</h1>
   </ion-header-bar>
   <ion-content>
-    <div class="list list-inset">
-      <label class="item item-input">
-        <input type="text" placeholder="Name" ng-model="lockup.name">
-      </label>
-      <label class="item item-input">
-        <input type="text" placeholder="Address" ng-model="lockup.address">
-      </label>
-    </div>
+    <form>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <input type="text" placeholder="Location" ng-model="searchText">
+          <i class="icon ion-location geocodeAddressIcon" ng-mousedown="geocode()"></i>
+        </label>
+        <label class="item item-input">
+          <input type="text" placeholder="Name" ng-model="lockup.name">
+        </label>
+      </div>
+    </form>
   </ion-content>
   <ion-footer-bar class="bar-dark">
     <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>

@@ -17,3 +17,8 @@
 .popup-buttons {
   border-top: 1px solid #eee;
 }
+
+.geocodeAddressIcon {
+  font-size: 1.5em;
+  color: red;
+}
