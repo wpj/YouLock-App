@@ -3,20 +3,20 @@
     <h1 class="title">New Lockup</h1>
   </ion-header-bar>
   <ion-content>
-    <!-- <form> -->
-      <div class="list list-inset">
-        <label>Location</label>
+    <form>
+      <div class="list">
+        <!-- <label>Location</label> -->
         <label class="item item-input">
           <i class=" icon ion-location placeholder-icon geocodeAddressIcon" ng-mousedown="processLocation()"></i>
           <input type="text" placeholder="Location" ng-model="locationQuery.text">
-          <i class="icon ion-close-round" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></i>
+          <i class="icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></i>
         </label>
-        <label>Description</label>
+        <!-- <label>Description</label> -->
         <label class="item item-input">
-          <textarea placeholder="Description" ng-model="lockup.description" rows="6"></textarea>
+          <textarea placeholder="Description" ng-model="lockup.description" rows="6" ng-focus="processLocation()"></textarea>
         </label>
       </div>
-    <!-- </form> -->
+    </form>
     Name: {{ lockup.name }} <br>
     Description: {{ lockup.description }} <br>
     Location: {{ lockup.location.coordinates }} <br>
