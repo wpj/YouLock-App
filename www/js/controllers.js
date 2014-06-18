@@ -20,12 +20,6 @@ angular.module('controllers', [])
 
   // Location processing
 
-  // var getPosition = function() {
-  //   $cordovaGeolocation.getCurrentPosition().then(function(position) {
-  //     $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-  //   });
-  // };
-
   var geolocate = function(success, errCb) {
     $cordovaGeolocation.getCurrentPosition().then(function(position) {
       success(position);
@@ -156,56 +150,48 @@ angular.module('controllers', [])
     text: ""
   };
 
+  $scope.clearGeocodeForm = function() {
+    $scope.locationQuery.text = "";
+  };
+
+  $scope.geocodeFormIsActive = function() {
+    return $scope.locationQuery.text.length;
+  };
+
   $scope.processLocation = function() {
-    // if (!$scope.lockup.location.coordinates.length) {
+
+    // This doesn't work because of async
+
+    // if (!$scope.lockup.location.coordinates) {
     //   geolocate(function(position) {
     //     $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-    //     if ($scope.lockupLocation.length) {
-    //       console.log("Geocoding.");
-    //       geocode($scope.lockupLocation, function(results, status) {
-    //         if (status === "OK") {
-    //           // $scope.lockup.address = results[0].
-    //           $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
-    //           $scope.lockupLocation = $scope.lockup.location.coordinates;
-    //         } else {
-    //           console.log("Location not found");
-    //         }
-    //       });
-    //     } else {
-    //         var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
-    //         if (String($scope.lockup.location.coordinates).match(coordRegexp)) {
-    //           // still need to reverse-geocode this
-    //           $scope.searchText = $scope.lockup.location.coordinates;
-    //       }
-    //     }
-    //   }, function(err) {
-    //     if (err) console.log(err);
     //   });
     // }
-
-    // console.log($scope.locationQuery.text);
-
+    
     if ($scope.locationQuery.text.length) {
-      // console.log("Geocoding.");
-      geocode($scope.locationQuery.text, function(results, status) {
-        if (status === "OK") {
-          // console.log(results[0].geometry.location);
-          $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
-          // console.log($scope.lockup.location.coordinates);
-          $scope.locationQuery.text = $scope.lockup.location.coordinates;
-          console.log($scope.locationQuery.text);
-          // $scope.$apply;
-          // console.log($scope.lockup);
-        } else {
-          console.log("Location not found");
-        }
+      Lockup.geocode($scope.locationQuery.text).then(function(results) {
+        $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
+        var formattedAddress = results[0].formatted_address;
+        $scope.lockup.address = formattedAddress;
+        $scope.locationQuery.text = formattedAddress;
+      }, function(err) {
+        console.log("Address not found.");
       });
     } else {
-      console.log(String($scope.lockup.location.coordinates));
       var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
       if (String($scope.lockup.location.coordinates).match(coordRegexp)) {
-        // still need to reverse-geocode this
-        $scope.locationQuery.text = $scope.lockup.location.coordinates;
+        var LatLngCoords = {
+          lat: $scope.lockup.location.coordinates[1],
+          lng: $scope.lockup.location.coordinates[0]
+        };
+
+        Lockup.reverseGeocode(LatLngCoords).then(function(results) {
+          var formattedAddress = results[0].formatted_address;
+          $scope.lockup.address = formattedAddress;
+          $scope.locationQuery.text = formattedAddress;
+        }, function(err) {
+          // handle the error
+        });
       }
     }
   };
@@ -293,15 +279,6 @@ angular.module('controllers', [])
     $scope.searchText = "";
   };
 
-  var geocode = function(query, callback) {
-    var Geocoder = new google.maps.Geocoder();
-    Geocoder.geocode({
-      address: query
-    }, function(results, status) {
-      callback(results, status);
-    });
-  };
-
   $scope.searchLocation = function() {
     if ($scope.searchText.length) {
       $ionicLoading.show({
@@ -310,16 +287,13 @@ angular.module('controllers', [])
         showBackdrop: false
       });
 
-      geocode($scope.searchText, function(data, status) {
-        if (status === "OK") {
-          $ionicLoading.hide();
-          $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
-          if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
-        } else {
-          // MAKE A BETTER UI FEATURE HERE
-          $ionicLoading.hide();
-          console.log("Not found!");
-        }
+      Lockup.geocode($scope.searchText).then(function(data) {
+        $ionicLoading.hide();
+        $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
+      }, function(err) {
+        $ionicLoading.hide();
+        console.log("Not found!");
       });
     }
   };
