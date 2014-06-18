@@ -2,7 +2,7 @@ angular.module('controllers', [])
 
 .controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, underscore, $log) {
   
-  // map initialization
+  // $scope initialization
 
   $scope.map = {
     control: {},
@@ -152,6 +152,13 @@ angular.module('controllers', [])
 
   $scope.clearGeocodeForm = function() {
     $scope.locationQuery.text = "";
+    $scope.lockup.location.coordinates = [];
+    $scope.lockup.address = "";
+     geolocate(function(position) {
+      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+    }, function(err) {
+      if (err) console.log(err);
+    });
   };
 
   $scope.geocodeFormIsActive = function() {
