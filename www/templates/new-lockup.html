@@ -4,20 +4,35 @@
   </ion-header-bar>
   <ion-content>
     <form>
-      <div class="list">
-        <!-- <label>Location</label> -->
+      <!-- <div class="list list-inset">
+        <label>Location</label>
         <label class="item item-input">
           <i class=" icon ion-location placeholder-icon geocodeAddressIcon" ng-mousedown="processLocation()"></i>
           <input type="text" placeholder="Location" ng-model="locationQuery.text">
           <i class="icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></i>
         </label>
-        <!-- <label>Description</label> -->
+        <label>Description</label>
+        <label class="item item-input">
+          <textarea placeholder="Description" ng-model="lockup.description" rows="6"></textarea>
+        </label>
+      </div> -->
+      <div class="card">
+        <div class="item item-divider">
+          Location
+        </div>
+        <label class="item item-input">
+          <i class=" icon ion-location placeholder-icon geocodeAddressIcon" ng-mousedown="processLocation()"></i>
+          <input ng-blur="processLocation()" type="text" placeholder="Press for current location/enter address" ng-model="locationQuery.text">
+          <i class="icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></i>
+        </label>
+        <div class="item item-divider">
+          Description
+        </div>
         <label class="item item-input">
           <textarea placeholder="Description" ng-model="lockup.description" rows="6"></textarea>
         </label>
       </div>
     </form>
-    Name: {{ lockup.name }} <br>
     Description: {{ lockup.description }} <br>
     Location: {{ lockup.location.coordinates }} <br>
     Address: {{ lockup.address }} <br>

@@ -18,6 +18,23 @@ angular.module('controllers', [])
     }
   };
 
+  $scope.lockup = {
+    description: "",
+    address: "",
+    location: {
+      type: "Point",
+      coordinates: []
+    },
+    rackAmount: 1,
+    createdBy: "User"
+  };
+
+  $scope.locationQuery = {
+    text: ""
+  };
+
+  $scope.searchText = "";
+
   // Location processing
 
   var geolocate = function(success, errCb) {
@@ -134,22 +151,6 @@ angular.module('controllers', [])
     $scope.modal.show();
   };
 
-  $scope.lockup = {
-    name: "",
-    address: "",
-    description: "",
-    location: {
-      type: "Point",
-      coordinates: []
-    },
-    rackAmount: 1,
-    createdBy: "User"
-  };
-
-  $scope.locationQuery = {
-    text: ""
-  };
-
   $scope.clearGeocodeForm = function() {
     $scope.locationQuery.text = "";
     $scope.lockup.location.coordinates = [];
@@ -220,7 +221,7 @@ angular.module('controllers', [])
         $scope.lockups.push(data);
         $scope.modal.hide();
         $scope.lockup = {
-          name: "",
+          description: "",
           address: "",
           location: {
             type: "Point",
@@ -275,8 +276,6 @@ angular.module('controllers', [])
 
   // Search
   // ===========================================================================
-
-  $scope.searchText = "";
 
   $scope.searchIsActive = function() {
     return $scope.searchText.length;
