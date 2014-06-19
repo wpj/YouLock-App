@@ -15,6 +15,9 @@ angular.module('controllers', [])
       idle: function(map, event, eventArgs) {
         searchInMapBounds(map);
       }
+    },
+    icons: {
+      userLockups: "img/ionic.png"
     }
   };
 
@@ -26,7 +29,7 @@ angular.module('controllers', [])
       coordinates: []
     },
     rackAmount: 1,
-    createdBy: "User"
+    createdBy: 2
   };
 
   $scope.locationQuery = {
@@ -34,6 +37,9 @@ angular.module('controllers', [])
   };
 
   $scope.searchText = "";
+
+  $scope.cityRacks = [];
+  $scope.userLockups = [];
 
   // Location processing
 
@@ -110,10 +116,19 @@ angular.module('controllers', [])
     Lockup.findInMapArea(SWLng, SWLat, NELng, NELat)
       .success(function(data) {
         // filters out the lockups not in the current map bounds
-        $scope.lockups = _.filter(data, function(lockup) {
-          var coords = new google.maps.LatLng(lockup.location.coordinates[1], lockup.location.coordinates[0]);
-          return currentMapArea.contains(coords);
+        // $scope.lockups = _.filter(data, function(lockup) {
+        //   var coords = new google.maps.LatLng(lockup.location.coordinates[1], lockup.location.coordinates[0]);
+        //   return currentMapArea.contains(coords);
+        // });
+
+        var sortedData = _.groupBy(data, "createdBy");
+        var userLockupsWithIcon = _.each(sortedData[2], function(lockup) {
+          lockup.icon = 'img/cycling.png';
+          // lockup.icon = 'img/Bike.svg';
         });
+
+        $scope.cityRacks = sortedData[1];
+        $scope.userLockups = userLockupsWithIcon;
 
          // Logic for caching markers already on the map (doesn't work yet) 
 
@@ -218,7 +233,7 @@ angular.module('controllers', [])
           duration: 800,
           noBackdrop: true
         });
-        $scope.lockups.push(data);
+        $scope.userLockups.push(data);
         $scope.modal.hide();
         $scope.lockup = {
           description: "",
