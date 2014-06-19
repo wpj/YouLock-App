@@ -1,11 +1,4 @@
-#map-container {
-  /*position:relative;*/
-  height: 100%;
-  width: 100%;
-}
-
-.angular-google-map-container {
-  position: absolute;
+.angular-google-map-container, .angular-google-map {
   height: 100%;
   width: 100%;
 }
@@ -37,10 +30,13 @@ textarea {
 
 .pac-item {
   z-index: 1000;
-  width: 100% !important;
   padding-left: 1.4em;
 }
 
 .pac-icon-marker {
   margin-top: 2px !important;
+}
+
+.scroll {
+  height: 100%;
 }
