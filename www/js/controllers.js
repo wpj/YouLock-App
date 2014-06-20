@@ -349,7 +349,7 @@ angular.module('controllers', [])
         },
         {
           text: '<b>Submit</b>',
-          type: 'button-positive',
+          type: 'button-assertive',
           onTap: function(e) {
             if (!$scope.lockupReport.description) {
               // only allow the user to submit report if they've entered text
