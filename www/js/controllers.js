@@ -127,8 +127,8 @@ angular.module('controllers', [])
           // lockup.icon = 'img/Bike.svg';
         });
 
-        $scope.cityRacks = sortedData[1];
-        $scope.userLockups = userLockupsWithIcon;
+        $scope.cityRacks = sortedData[1] ? sortedData[1] : [];
+        $scope.userLockups = userLockupsWithIcon ? userLockupsWithIcon : [];
 
          // Logic for caching markers already on the map (doesn't work yet) 
 
@@ -178,20 +178,14 @@ angular.module('controllers', [])
   };
 
   $scope.geocodeFormIsActive = function() {
-    return $scope.locationQuery.text.length;
+    // originally returned .text.length, but the required form directive sets
+    // the model it's associated with to null if you clear the form
+    return $scope.locationQuery.text ? true : false;
   };
 
   $scope.processLocation = function() {
 
-    // This doesn't work because of async
-
-    // if (!$scope.lockup.location.coordinates) {
-    //   geolocate(function(position) {
-    //     $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-    //   });
-    // }
-    
-    if ($scope.locationQuery.text.length) {
+    if ($scope.locationQuery.text) {
       Lockup.geocode($scope.locationQuery.text).then(function(results) {
         $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
         var formattedAddress = results[0].formatted_address;
@@ -199,6 +193,16 @@ angular.module('controllers', [])
         $scope.locationQuery.text = formattedAddress;
       }, function(err) {
         console.log("Address not found.");
+      });
+    } else if ($scope.locationQuery.text === undefined) {
+      $scope.locationQuery.text = "";
+      $scope.lockup.location.coordinates = [];
+      $scope.lockup.address = "";
+       geolocate(function(position) {
+        $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+        $scope.processLocation();
+      }, function(err) {
+        if (err) console.log(err);
       });
     } else {
       var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
@@ -228,6 +232,7 @@ angular.module('controllers', [])
           noBackdrop: true
         });
       } else {
+        data.icon = 'img/cycling.png';
         $ionicLoading.show({
           template: 'Lockup created',
           duration: 800,
@@ -245,6 +250,7 @@ angular.module('controllers', [])
           rackAmount: 1,
           createdBy: "User",
         };
+        $scope.locationQuery.text = "";
       }
     }, function(err) {
       console.log("Lockup not created!", err);
