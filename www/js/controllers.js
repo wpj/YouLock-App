@@ -331,12 +331,14 @@ angular.module('controllers', [])
   $scope.showReportPopup = function() {
     // For whatever reason, this has to be an object. It can't be a string.
     $scope.lockupReport = {
-      lockupId: $scope.currentLockup._id
+      lockupId: $scope.currentLockup._id,
+      missing: false,
+      theft: false
     };
 
     var reportPopup = $ionicPopup.show({
-      template: '<textarea class="lockupReport" ng-model="lockupReport.reportDescription" rows="5" placeholder="Reason for reporting"></textarea>',
-      title: 'Report Lockup',
+      templateUrl: 'templates/report-popup.html',
+      title: 'Send Report',
       scope: $scope,
       buttons: [
         {
@@ -349,7 +351,7 @@ angular.module('controllers', [])
           text: '<b>Submit</b>',
           type: 'button-positive',
           onTap: function(e) {
-            if (!$scope.lockupReport.reportDescription) {
+            if (!$scope.lockupReport.description) {
               // only allow the user to submit report if they've entered text
               e.preventDefault();
             } else {
