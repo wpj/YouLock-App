@@ -69,6 +69,45 @@ angular.module('services', [])
   };
 
   return Report;
+}])
+
+.factory('User', ['$http', function($http) {
+  var User = {
+    register: function(credentials, callback, errCb) {
+      $http.post('http://localhost:8080/auth/signup', credentials).success(function(data) {
+        callback(data);
+      }).error(function(err) {
+        errCb(err);
+      });
+    },
+    login: function(credentials, callback, errCb) {
+      $http.post('http://localhost:8080/auth/login', credentials).success(function(data) {
+        callback(data);
+      }).error(function(err) {
+        errCb(err);
+      });
+    },
+    logout: function(callback, errCb) {
+      $http.get('http://localhost:8080/auth/logout').success(function(data) {
+        callback(data);
+      }).error(function(error) {
+        errCb(error);
+      });
+    },
+    loggedIn: function(loggedInCb, notLoggedInCb) {
+      $http.get('http://localhost:8080/auth/loggedin').success(function(user) {
+        if (user !== '0') {
+          loggedInCb();
+        } else {
+          notLoggedInCb();
+        }
+      }).error(function(err) {
+        console.log(err);
+      });
+    }
+  };
+
+  return User;
 }]);
 
 // .factory('Geocode', ['$q', function($q) {

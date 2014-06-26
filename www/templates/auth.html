@@ -1,0 +1,67 @@
+<div class="modal">
+  <ion-header-bar class="bar-dark">
+    <h1 class="title">Account</h1>
+  </ion-header-bar>
+    
+    <div ng-hide="loggedIn">
+      <form ng-show="loginEnabled" name="userLogin" novalidate>
+        <ion-content>
+          <div class="card">
+            
+            <div>
+              <div class="item item-divider">
+                Login
+              </div>
+              <label class="item item-input">
+                <i class=" icon ion-email placeholder-icon"></i>
+                <input type="email" placeholder="E-mail" ng-model="loginCreds.email">
+              </label>
+              <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="loginCreds.password">
+              </label>
+            </div>
+      
+          </div>
+      
+          Need an account?
+          <button class="button button-neutral" ng-click="toggleAuthForm()">Register</button>
+      
+          <button class="button button-balanced button-block" ng-click="login()">Login</button>
+        </ion-content>
+      </form>
+      
+      <form ng-show="registrationEnabled" name="userRegistration" novalidate>
+        <ion-content>
+          <div class="card">
+      
+            <div>
+              <div class="item item-divider">
+                Register
+              </div>
+              <label class="item item-input">
+                <i class=" icon ion-email placeholder-icon"></i>
+                <input type="email" placeholder="E-mail" ng-model="registration.email">
+              </label>
+              <label class="item item-input">
+                <input type="password" placeholder="Password" ng-model="registration.password">
+              </label>
+            </div>
+      
+          </div>
+      
+          Have an account?
+          <button class="button button-neutral" ng-click="toggleAuthForm()">Login</button>
+      
+          <button class="button button-balanced button-block" ng-click="register()">Register</button>
+        </ion-content>
+      </form>
+    </div>
+
+    <ion-content ng-show="loggedIn">
+      <button class="button button-assertive button-block" ng-click="logout()">Logout</button>
+    </ion-content>
+
+  <ion-footer-bar class="bar-dark">
+    <button ng-click="closeAuthModal()" class="button button-icon icon ion-close-round"></button>
+  </ion-footer-bar>
+</div>

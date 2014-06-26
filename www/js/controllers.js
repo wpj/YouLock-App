@@ -1,6 +1,6 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, underscore, $log) {
+.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', 'User', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, User, underscore, $log) {
   
   // $scope initialization
 
@@ -274,6 +274,13 @@ angular.module('controllers', [])
     $scope.infoModal = modal;
   });
 
+  $ionicModal.fromTemplateUrl('templates/auth.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.authModal = modal;
+  });
+
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
@@ -290,9 +297,9 @@ angular.module('controllers', [])
   };
 
   $scope.closeLockupInfoModal = function() {
-      $scope.infoModal.hide();
-      $scope.currentLockup = {};
-      $scope.reportLockupEnabled = false;
+    $scope.infoModal.hide();
+    $scope.currentLockup = {};
+    $scope.reportLockupEnabled = false;
   };
 
   // Search
@@ -367,6 +374,91 @@ angular.module('controllers', [])
   var submitReport = function() {
     Report.submit($scope.lockupReport, function(report) {
       console.log("Report submitted!", report);
+    }, function(error) {
+      console.log(error);
+    });
+  };
+
+
+  // authorization
+
+  // Check if the user is logged in
+  // var checkLoggedin = function(){
+
+  //   var deferred = $q.defer();
+  //   $http.get('http://localhost:8080/auth/loggedin').success(function(user) {
+  //     if (user !== '0') return deferred.resolve(user);
+  //     else {
+  //       console.log("You need to log in.");
+  //       return deferred.reject();
+  //     }
+  //   });
+  //   return deferred.promise;
+  // };
+
+  $scope.toggleAuthForm = function() {
+    if ($scope.registrationEnabled === true) {
+      $scope.registrationEnabled = false;
+      $scope.loginEnabled = true;
+    } else {
+      $scope.registrationEnabled = true;
+      $scope.loginEnabled = false;
+    }
+  };
+
+  $scope.showAuthModal = function() {
+    $scope.loginEnabled = true;
+    $scope.registrationEnabled = false;
+    User.loggedIn(function() {
+      $scope.loggedIn = true;
+      $scope.authModal.show();
+    }, function() {
+      $scope.loggedin = false;
+      $scope.authModal.show();
+    });
+    $scope.registration = {
+      email: '',
+      password: ''
+    };
+    $scope.loginCreds = {
+      email: '',
+      password: ''
+    };
+  };
+
+  $scope.closeAuthModal = function() {
+    $scope.authModal.hide();
+    $scope.registration.email = '';
+    $scope.registration.password = '';
+    $scope.loginCreds.email = '';
+    $scope.loginCreds.password = '';
+  };
+
+  $scope.register = function() {
+    User.register($scope.registration, function(data) {
+      console.log(data);
+    }, function(error) {
+      console.log(data);
+    });
+  };
+
+  $scope.login = function() {
+    User.login($scope.loginCreds, function(data) {
+      $scope.loggedIn = true;
+      console.log(data);
+      $scope.loginCreds = {
+        email: '',
+        password: ''
+      };
+    }, function(error) {
+      console.log(error);
+    });
+  };
+
+  $scope.logout = function() {
+    User.logout(function(data) {
+      $scope.loggedIn = false;
+      console.log(data);
     }, function(error) {
       console.log(error);
     });
