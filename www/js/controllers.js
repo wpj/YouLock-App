@@ -110,7 +110,7 @@ angular.module('controllers', [])
         //   return currentMapArea.contains(coords);
         // });
 
-        var sortedData = _.groupBy(data, "createdBy");
+        var sortedData = _.groupBy(data, "lockupType");
         var userLockupsWithIcon = _.each(sortedData[2], function(lockup) {
           lockup.icon = 'img/cycling.png';
           // lockup.icon = 'img/Bike.svg';
@@ -155,6 +155,7 @@ angular.module('controllers', [])
         coordinates: []
       },
       rackAmount: 1,
+      lockupType: 2
     };
     User.loggedIn(function(user) {
       $scope.lockup.createdBy = user.id;
@@ -252,7 +253,8 @@ angular.module('controllers', [])
             coordinates: []
           },
           rackAmount: 1,
-          createdBy: "User",
+          createdBy: "",
+          lockupType: 2
         };
         $scope.locationQuery.text = "";
       }
