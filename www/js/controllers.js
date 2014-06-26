@@ -21,17 +21,6 @@ angular.module('controllers', [])
     }
   };
 
-  $scope.lockup = {
-    description: "",
-    address: "",
-    location: {
-      type: "Point",
-      coordinates: []
-    },
-    rackAmount: 1,
-    createdBy: 2
-  };
-
   $scope.locationQuery = {
     text: ""
   };
@@ -158,7 +147,17 @@ angular.module('controllers', [])
   // ===========================================================================
 
   $scope.newLockup = function() {
-    User.loggedIn(function() {
+    $scope.lockup = {
+      description: "",
+      address: "",
+      location: {
+        type: "Point",
+        coordinates: []
+      },
+      rackAmount: 1,
+    };
+    User.loggedIn(function(user) {
+      $scope.lockup.createdBy = user.id;
       geolocate(function(position) {
         $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
       }, function(err) {
@@ -288,6 +287,7 @@ angular.module('controllers', [])
 
   $scope.closeModal = function() {
     $scope.modal.hide();
+    $scope.clearGeocodeForm();
   };
 
   // Lockup info
@@ -414,7 +414,8 @@ angular.module('controllers', [])
   $scope.showAuthModal = function() {
     $scope.loginEnabled = true;
     $scope.registrationEnabled = false;
-    User.loggedIn(function() {
+    User.loggedIn(function(user) {
+      $scope.currentUser = user;
       $scope.loggedIn = true;
       $scope.authModal.show();
     }, function() {
@@ -450,7 +451,7 @@ angular.module('controllers', [])
   $scope.login = function() {
     User.login($scope.loginCreds, function(data) {
       $scope.loggedIn = true;
-      console.log(data);
+      $scope.currentUser = data.user;
       $scope.loginCreds = {
         email: '',
         password: ''

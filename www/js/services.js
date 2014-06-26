@@ -97,7 +97,7 @@ angular.module('services', [])
     loggedIn: function(loggedInCb, notLoggedInCb) {
       $http.get('http://localhost:8080/auth/loggedin').success(function(user) {
         if (user !== '0') {
-          loggedInCb();
+          loggedInCb(user);
         } else {
           notLoggedInCb();
         }
