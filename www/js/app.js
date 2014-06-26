@@ -7,7 +7,6 @@ angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directive
         return promise.then(
           // Success: just return the response
           function(response){
-            console.log(response.status);
             return response;
           },
           // Error: check the error status to get only the 401
