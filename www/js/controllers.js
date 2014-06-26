@@ -158,12 +158,17 @@ angular.module('controllers', [])
   // ===========================================================================
 
   $scope.newLockup = function() {
-    geolocate(function(position) {
-      $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
-    }, function(err) {
-      if (err) console.log(err);
+    User.loggedIn(function() {
+      geolocate(function(position) {
+        $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
+      }, function(err) {
+        if (err) console.log(err);
+      });
+      $scope.modal.show();
+    }, function() {
+      console.log("You need to log in to add a new Lockup!");
+      $scope.showAuthModal();
     });
-    $scope.modal.show();
   };
 
   $scope.clearGeocodeForm = function() {
