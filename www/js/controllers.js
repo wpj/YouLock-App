@@ -59,13 +59,8 @@ angular.module('controllers', [])
       $scope.map.zoom = 17;
       $ionicLoading.hide();
 
-      // sends location to analytics server
-      Analytics.sendLocation({
-        coordinates: [
-          position.coords.longitude,
-          position.coords.latitude
-        ]
-      });
+      // send location to server for analytics
+      Analytics.sendLocation(position.coords.longitude, position.coords.latitude);
     }, function(err) {
       console.log("Position not found.");
       $ionicLoading.hide();
@@ -342,6 +337,8 @@ angular.module('controllers', [])
         $ionicLoading.hide();
         $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
         if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
+        // send geocoded address to server for analytics
+        Analytics.sendAddress(data[0].geometry.location.A, data[0].geometry.location.k);
       }, function(err) {
         $ionicLoading.hide();
         console.log("Not found!");

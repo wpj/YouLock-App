@@ -119,8 +119,25 @@ angular.module('services', [])
         console.log(err);
       });
     },
-    sendLocation: function(location) {
-      $http.post('http://localhost:8080/api/analytics/search/location', location).success(function(response) {
+    sendLocation: function(lat, lng) {
+      $http.get('http://localhost:8080/api/analytics/search/location', {
+        params: {
+          lat: lat,
+          lng: lng
+        }
+      }).success(function(response) {
+        console.log(response);
+      }).error(function(err) {
+        console.log(err);
+      });
+    },
+    sendAddress: function(lat, lng) {
+      $http.get('http://localhost:8080/api/analytics/search/address', {
+        params: {
+          lat: lat,
+          lng: lng
+        }
+      }).success(function(response) {
         console.log(response);
       }).error(function(err) {
         console.log(err);
