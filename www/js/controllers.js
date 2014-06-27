@@ -1,6 +1,6 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', 'User', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, User, underscore, $log) {
+.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', 'User', 'Analytics', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, User, Analytics, underscore, $log) {
   
   // $scope initialization
 
@@ -58,6 +58,14 @@ angular.module('controllers', [])
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       $scope.map.zoom = 17;
       $ionicLoading.hide();
+
+      // sends location to analytics server
+      Analytics.sendLocation({
+        coordinates: [
+          position.coords.longitude,
+          position.coords.latitude
+        ]
+      });
     }, function(err) {
       console.log("Position not found.");
       $ionicLoading.hide();
@@ -68,7 +76,7 @@ angular.module('controllers', [])
   showLocationErrorAlert = function() {
     var locationErrorPopup = $ionicPopup.alert({
       title: 'Not found!',
-      template: 'Your location couldn\'t be found.'
+      template: "Your location couldn't be found."
     });
   };
 
@@ -301,6 +309,8 @@ angular.module('controllers', [])
     $scope.currentLockup = $markerModel;
     console.log("$scope.currentLockup: ", $scope.currentLockup);
     $scope.infoModal.show();
+    // increment the current lockup's page views on the server
+    Analytics.incrementPageViews($scope.currentLockup);
   };
 
   $scope.closeLockupInfoModal = function() {
@@ -472,21 +482,6 @@ angular.module('controllers', [])
     });
   };
 
-  // ===========================================================================
-  // 
-
-  // $scope.lockupsEvents = {
-  //   mousedown: function(marker, eventName, lockup) {
-  //     console.log("Modal window lockup: ", lockup);
-  //     openLockupInfoModal(lockup);
-  //   }
-  // };
-
-  // var openLockupInfoModal = function(lockup) {
-  //   $scope.currentLockup = lockup;
-  //   console.log("$scope.currentLockup: ", $scope.currentLockup);
-  //   $scope.infoModal.show();
-  // };
 
   // ===========================================================================
   // $scope.lockups = [ { _id: 1,

@@ -108,6 +108,26 @@ angular.module('services', [])
   };
 
   return User;
+}])
+
+.factory('Analytics', ['$http', function($http) {
+  var Analytics = {
+    incrementPageViews: function(lockup) {
+      $http.get('http://localhost:8080/api/analytics/lockups/' + lockup._id).success(function(response) {
+        console.log(response);
+      }).error(function(err) {
+        console.log(err);
+      });
+    },
+    sendLocation: function(location) {
+      $http.post('http://localhost:8080/api/analytics/search/location', location).success(function(response) {
+        console.log(response);
+      }).error(function(err) {
+        console.log(err);
+      });
+    }
+  };
+  return Analytics;
 }]);
 
 // .factory('Geocode', ['$q', function($q) {
