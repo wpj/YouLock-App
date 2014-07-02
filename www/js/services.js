@@ -1,13 +1,13 @@
 angular.module('services', [])
 
-.factory('Lockup', ['$http', '$q', function($http, $q){
+.factory('Lockup', ['$http', '$q', 'ServerUrl', function($http, $q, ServerUrl){
 
   var Lockup = {
     findAll: function() {
-      return $http.get('http://localhost:8080/api/lockups');
+      return $http.get(ServerUrl + 'api/lockups');
     },
     findInMapArea: function(SWLng, SWLat, NELng, NELat) {
-      return $http.get('http://localhost:8080/api/lockups', {
+      return $http.get(ServerUrl + 'api/lockups', {
         params: {
           filtered: true,
           SWLng: SWLng,
@@ -18,7 +18,7 @@ angular.module('services', [])
       });
     },
     submit: function(lockup, callback, errCb) {
-      $http.post('http://localhost:8080/api/lockups', lockup).success(function(data) {
+      $http.post(ServerUrl + 'api/lockups', lockup).success(function(data) {
         callback(data);
       }).error(function(error) {
         errCb(error);
@@ -53,14 +53,11 @@ angular.module('services', [])
   return Lockup;
 }])
 
-.factory('Report', ['$http', function($http) {
+.factory('Report', ['$http', 'ServerUrl', function($http, ServerUrl) {
   
   var Report = {
-    findAll: function() {
-      return $http.get('http://localhost:8080/api/reports');
-    },
     submit: function(report, callback, errCb) {
-      $http.post('http://localhost:8080/api/reports', report).success(function(data) {
+      $http.post(ServerUrl + 'api/reports', report).success(function(data) {
         callback(data);
       }).error(function(error) {
         errCb(err);
@@ -71,31 +68,31 @@ angular.module('services', [])
   return Report;
 }])
 
-.factory('User', ['$http', function($http) {
+.factory('User', ['$http', 'ServerUrl', function($http, ServerUrl) {
   var User = {
     register: function(credentials, callback, errCb) {
-      $http.post('http://localhost:8080/auth/signup', credentials).success(function(data) {
+      $http.post(ServerUrl + 'auth/signup', credentials).success(function(data) {
         callback(data);
       }).error(function(err) {
         errCb(err);
       });
     },
     login: function(credentials, callback, errCb) {
-      $http.post('http://localhost:8080/auth/login', credentials).success(function(data) {
+      $http.post(ServerUrl + 'auth/login', credentials).success(function(data) {
         callback(data);
       }).error(function(err) {
         errCb(err);
       });
     },
     logout: function(callback, errCb) {
-      $http.get('http://localhost:8080/auth/logout').success(function(data) {
+      $http.get(ServerUrl + 'auth/logout').success(function(data) {
         callback(data);
       }).error(function(error) {
         errCb(error);
       });
     },
     loggedIn: function(loggedInCb, notLoggedInCb) {
-      $http.get('http://localhost:8080/auth/loggedin').success(function(user) {
+      $http.get(ServerUrl + 'auth/loggedin').success(function(user) {
         if (user !== '0') {
           loggedInCb(user);
         } else {
@@ -110,17 +107,17 @@ angular.module('services', [])
   return User;
 }])
 
-.factory('Analytics', ['$http', function($http) {
+.factory('Analytics', ['$http', 'ServerUrl', function($http, ServerUrl) {
   var Analytics = {
     incrementPageViews: function(lockup) {
-      $http.get('http://localhost:8080/api/analytics/lockups/' + lockup._id).success(function(response) {
+      $http.get(ServerUrl + 'api/analytics/lockups/' + lockup._id).success(function(response) {
         console.log(response);
       }).error(function(err) {
         console.log(err);
       });
     },
     sendLocation: function(lat, lng) {
-      $http.get('http://localhost:8080/api/analytics/search/location', {
+      $http.get(ServerUrl + 'api/analytics/search/location', {
         params: {
           lat: lat,
           lng: lng
@@ -132,7 +129,7 @@ angular.module('services', [])
       });
     },
     sendAddress: function(lat, lng) {
-      $http.get('http://localhost:8080/api/analytics/search/address', {
+      $http.get(ServerUrl + 'api/analytics/search/address', {
         params: {
           lat: lat,
           lng: lng
@@ -145,7 +142,9 @@ angular.module('services', [])
     }
   };
   return Analytics;
-}]);
+}])
+
+.constant('ServerUrl', 'http://localhost:8080/');
 
 // .factory('Geocode', ['$q', function($q) {
   
