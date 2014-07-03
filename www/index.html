@@ -58,7 +58,7 @@
         control="map.control"
         ng-if="map.center"
         >
-        <markers models="cityRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}"></markers>
+        <markers models="cityRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}" icon="'icon'"></markers>
         <markers models="userLockups" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true}" icon="'icon'"></markers>
       </google-map>
 
