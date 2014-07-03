@@ -8,7 +8,9 @@
           Description
         </div>
         <div class="item item-text-wrap">
-          {{currentLockup.description}}
+          <img ng-src="{{currentLockup.icon}}">
+          <span ng-hide="ifCityRack()">{{currentLockup.description}}</span>
+          <span ng-show="ifCityRack()">CityRack</span>
         </div>
         <div class="item item-divider">
           Address
@@ -21,12 +23,6 @@
         </div>
         <div class="item item-text-wrap">
           {{currentLockup.rackAmount}}
-        </div>
-        <div class="item item-divider">
-          Created by
-        </div>
-        <div class="item item-text-wrap">
-          {{currentLockup.createdBy}}
         </div>
         <div class="item item-divider">
           Pageviews

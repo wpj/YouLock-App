@@ -40,3 +40,8 @@ textarea {
 .scroll {
   height: 100%;
 }
+
+.auth-message {
+  color: red;
+  font-weight: bolder;
+}

@@ -321,6 +321,10 @@ angular.module('controllers', [])
     $scope.reportLockupEnabled = false;
   };
 
+  $scope.ifCityRack = function() {
+    if ($scope.currentLockup) return $scope.currentLockup.lockupType === 1;
+  };
+
   // Search
   // ===========================================================================
 
