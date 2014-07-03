@@ -175,7 +175,7 @@ angular.module('controllers', [])
       $scope.modal.show();
     }, function() {
       $scope.newLockupAttempt = true;
-      $scope.authMessage = "required to add a new Lockup.";
+      $scope.authMessage = "required to add Lockup";
       $scope.showAuthModal();
     });
   };
