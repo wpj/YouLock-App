@@ -10,7 +10,7 @@
             
             <div>
               <div class="item item-divider">
-                Login
+                Login <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
               </div>
               <label class="item item-input">
                 <i class=" icon ion-email placeholder-icon"></i>
@@ -23,10 +23,11 @@
       
           </div>
       
-          Need an account?
-          <button class="button button-neutral" ng-click="toggleAuthForm()">Register</button>
-      
-          <button class="button button-balanced button-block" ng-click="login()">Login</button>
+          <div class="list list-inset">
+            <button class="button button-balanced button-block" ng-click="login()">Login</button>
+            Need an account?
+            <button class="button button-neutral" ng-click="toggleAuthForm()">Register</button>
+          </div>
         </ion-content>
       </form>
       
@@ -36,7 +37,7 @@
       
             <div>
               <div class="item item-divider">
-                Register
+                Register <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
               </div>
               <label class="item item-input">
                 <i class=" icon ion-email placeholder-icon"></i>
@@ -49,17 +50,27 @@
       
           </div>
       
-          Have an account?
-          <button class="button button-neutral" ng-click="toggleAuthForm()">Login</button>
-      
-          <button class="button button-balanced button-block" ng-click="register()">Register</button>
+          <div class="list list-inset">
+            <button class="button button-balanced button-block" ng-click="register()">Register</button>
+            Have an account?
+            <button class="button button-neutral" ng-click="toggleAuthForm()">Login</button>
+          </div>
         </ion-content>
       </form>
     </div>
 
     <ion-content ng-show="loggedIn">
-      <h3>{{currentUser.email}}</h3>
-      <button class="button button-assertive button-block" ng-click="logout()">Logout</button>
+      <div class="card">
+        <div class="item item-divider">
+          Email
+        </div>
+        <div class="item item-text-wrap">
+          <h3>{{currentUser.email}}</h3>
+        </div>
+      </div>
+      <div class="list list-inset">
+        <button class="button button-assertive button-block" ng-click="logout()">Logout</button>
+      </div>
     </ion-content>
 
   <ion-footer-bar class="bar-dark">

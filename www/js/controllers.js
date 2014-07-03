@@ -30,6 +30,8 @@ angular.module('controllers', [])
   $scope.cityRacks = [];
   $scope.userLockups = [];
 
+  $scope.authMessage = "";
+
   // Location processing
 
   var geolocate = function(success, errCb) {
@@ -169,7 +171,8 @@ angular.module('controllers', [])
       });
       $scope.modal.show();
     }, function() {
-      console.log("You need to log in to add a new Lockup!");
+      $scope.newLockupAttempt = true;
+      $scope.authMessage = "required to add a new Lockup.";
       $scope.showAuthModal();
     });
   };
@@ -411,6 +414,7 @@ angular.module('controllers', [])
   // };
 
   $scope.toggleAuthForm = function() {
+    $scope.authMessage = '';
     if ($scope.registrationEnabled === true) {
       $scope.registrationEnabled = false;
       $scope.loginEnabled = true;
@@ -447,13 +451,16 @@ angular.module('controllers', [])
     $scope.registration.password = '';
     $scope.loginCreds.email = '';
     $scope.loginCreds.password = '';
+    $scope.authMessage = '';
+    $scope.newLockupAttempt = false;
   };
 
   $scope.register = function() {
     User.register($scope.registration, function(data) {
       console.log(data);
     }, function(error) {
-      console.log(data);
+      console.log(error);
+      $scope.authMessage = error.info.signupMessage;
     });
   };
 
@@ -465,8 +472,17 @@ angular.module('controllers', [])
         email: '',
         password: ''
       };
+      if ($scope.authMessage) {
+        $scope.authMessage = "";
+        if ($scope.newLockupAttempt) {
+          $scope.closeAuthModal();
+          $scope.newLockup();
+          $scope.newLockupAttempt = false;
+        }
+      }
     }, function(error) {
-      console.log(error);
+      $scope.authMessage = error.info.loginMessage;
+      console.log("Error: ", error);
     });
   };
 
