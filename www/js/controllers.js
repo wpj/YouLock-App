@@ -152,6 +152,7 @@ angular.module('controllers', [])
   // ===========================================================================
 
   $scope.newLockup = function() {
+    $ionicLoading.hide();
     $scope.lockup = {
       description: "",
       address: "",
@@ -304,6 +305,7 @@ angular.module('controllers', [])
   // you must set data-tap-disabled to false, otherwise users can only open
   // one lockup modal and the app stops functioning.
   $scope.openLockupInfoModal = function($markerModel) {
+    $ionicLoading.hide();
     $scope.currentLockup = $markerModel;
     console.log("$scope.currentLockup: ", $scope.currentLockup);
     $scope.infoModal.show();
@@ -425,6 +427,7 @@ angular.module('controllers', [])
   };
 
   $scope.showAuthModal = function() {
+    $ionicLoading.hide();
     $scope.loginEnabled = true;
     $scope.registrationEnabled = false;
     User.loggedIn(function(user) {
