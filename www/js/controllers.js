@@ -246,7 +246,7 @@ angular.module('controllers', [])
           noBackdrop: true
         });
       } else {
-        data.icon = 'img/cycling.png';
+        data.icon = 'img/red.png';
         $ionicLoading.show({
           template: 'Lockup created',
           duration: 800,

@@ -17,8 +17,18 @@
           Description
         </div>
         <label class="item item-input">
-          <textarea required placeholder="Description" ng-model="lockup.description" rows="6"></textarea>
+          <textarea required placeholder="Description" ng-model="lockup.description" rows="3"></textarea>
         </label>
+      </div>
+
+      <div class="card">
+        <div class="item item-divider">
+          Preview
+        </div>
+        <ul class="list">
+          <li class="item"><strong>Address: </strong>{{lockup.address}}</li>
+          <li class="item"><strong>Description: </strong>{{lockup.description}}</li>
+        </ul>
       </div>
     </ion-content>
   </form>
