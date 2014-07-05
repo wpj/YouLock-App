@@ -144,7 +144,7 @@ angular.module('services', [])
   return Analytics;
 }])
 
-.constant('ServerUrl', 'http://localhost:8080/');
+.constant('ServerUrl', 'http://youlock.herokuapp.com/');
 
 // .factory('Geocode', ['$q', function($q) {
   

@@ -1,6 +1,8 @@
 <div class="modal">
   <ion-header-bar class="bar-dark">
     <h1 class="title">Account</h1>
+    <button ng-if="registrationEnabled && !loggedIn" class="button" ng-click="toggleAuthForm()">Login</button>
+    <button ng-if="loginEnabled && !loggedIn" class="button" ng-click="toggleAuthForm()">Register</button>
   </ion-header-bar>
     
     <div ng-hide="loggedIn">
@@ -25,8 +27,6 @@
       
           <div class="list list-inset">
             <button class="button button-balanced button-block" ng-click="login()">Login</button>
-            Need an account?
-            <button class="button button-neutral" ng-click="toggleAuthForm()">Register</button>
           </div>
         </ion-content>
       </form>
@@ -51,9 +51,7 @@
           </div>
       
           <div class="list list-inset">
-            <button class="button button-balanced button-block" ng-click="register()">Register</button>
-            Have an account?
-            <button class="button button-neutral" ng-click="toggleAuthForm()">Login</button>
+            <button class="button button-calm button-block" ng-click="register()">Register</button>
           </div>
         </ion-content>
       </form>

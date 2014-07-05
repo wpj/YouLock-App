@@ -184,7 +184,7 @@ angular.module('controllers', [])
     $scope.locationQuery.text = "";
     $scope.lockup.location.coordinates = [];
     $scope.lockup.address = "";
-     geolocate(function(position) {
+    geolocate(function(position) {
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     }, function(err) {
       if (err) console.log(err);
