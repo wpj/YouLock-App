@@ -3,7 +3,7 @@
     <h1 class="title">New Lockup</h1>
   </ion-header-bar>
   <form name="newLockupForm" novalidate>
-    <ion-content>
+    <ion-content ng-show="lockup.createdBy">
       <div class="card">
         <div class="item item-divider">
           Location
@@ -31,6 +31,11 @@
           <li class="item"><strong>Description: </strong>{{lockup.description}}</li>
         </ul>
       </div>
+    </ion-content>
+    <ion-content ng-hide="lockup.createdBy">
+      <h1 class="loadingSpinner">
+        <i class="icon ion-loading-d"></i>
+      </h1>
     </ion-content>
   </form>
   <ion-footer-bar class="bar-dark">

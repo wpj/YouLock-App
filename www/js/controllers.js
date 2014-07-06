@@ -165,6 +165,7 @@ angular.module('controllers', [])
       rackAmount: 1,
       lockupType: 2
     };
+    $scope.modal.show();
     User.loggedIn(function(user) {
       $scope.lockup.createdBy = user.id;
       geolocate(function(position) {
@@ -172,11 +173,9 @@ angular.module('controllers', [])
       }, function(err) {
         if (err) console.log(err);
       });
-      $scope.modal.show();
     }, function() {
       $scope.newLockupAttempt = true;
       $scope.authMessage = "required to add Lockup";
-      $scope.showAuthModal();
     });
   };
 
@@ -439,16 +438,18 @@ angular.module('controllers', [])
   };
 
   $scope.showAuthModal = function() {
+    $scope.processingAuth = true;
     $ionicLoading.hide();
     $scope.loginEnabled = true;
     $scope.registrationEnabled = false;
+    $scope.authModal.show();
     User.loggedIn(function(user) {
+      $scope.processingAuth = false;
       $scope.currentUser = user;
       $scope.loggedIn = true;
-      $scope.authModal.show();
     }, function() {
+      $scope.processingAuth = false;
       $scope.loggedin = false;
-      $scope.authModal.show();
     });
     $scope.registration = {
       email: '',

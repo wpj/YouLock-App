@@ -1,61 +1,69 @@
 <div class="modal">
   <ion-header-bar class="bar-dark">
     <h1 class="title">Account</h1>
-    <button ng-if="registrationEnabled && !loggedIn" class="button" ng-click="toggleAuthForm()">Login</button>
-    <button ng-if="loginEnabled && !loggedIn" class="button" ng-click="toggleAuthForm()">Register</button>
+    <button ng-if="registrationEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Login</button>
+    <button ng-if="loginEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Register</button>
   </ion-header-bar>
     
-    <div ng-hide="loggedIn">
-      <form ng-show="loginEnabled" name="userLogin" novalidate>
-        <ion-content>
-          <div class="card">
-            
-            <div>
-              <div class="item item-divider">
-                Login <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
+    <ion-content ng-show="processingAuth">
+      <h1 class="loadingSpinner">
+        <i class="icon ion-loading-d"></i>
+      </h1>
+    </ion-content>
+
+    <ion-content ng-hide="processingAuth">
+      <div ng-hide="loggedIn">
+        <form ng-show="loginEnabled" name="userLogin" novalidate>
+          <ion-content>
+            <div class="card">
+              
+              <div>
+                <div class="item item-divider">
+                  Login <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
+                </div>
+                <label class="item item-input">
+                  <i class=" icon ion-email placeholder-icon"></i>
+                  <input type="email" placeholder="E-mail" ng-model="loginCreds.email">
+                </label>
+                <label class="item item-input">
+                  <input type="password" placeholder="Password" ng-model="loginCreds.password">
+                </label>
               </div>
-              <label class="item item-input">
-                <i class=" icon ion-email placeholder-icon"></i>
-                <input type="email" placeholder="E-mail" ng-model="loginCreds.email">
-              </label>
-              <label class="item item-input">
-                <input type="password" placeholder="Password" ng-model="loginCreds.password">
-              </label>
+        
             </div>
-      
-          </div>
-      
-          <div class="list list-inset">
-            <button class="button button-balanced button-block" ng-click="login()">Login</button>
-          </div>
-        </ion-content>
-      </form>
-      
-      <form ng-show="registrationEnabled" name="userRegistration" novalidate>
-        <ion-content>
-          <div class="card">
-      
-            <div>
-              <div class="item item-divider">
-                Register <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
+        
+            <div class="list list-inset">
+              <button class="button button-balanced button-block" ng-click="login()">Login</button>
+            </div>
+          </ion-content>
+        </form>
+        
+        <form ng-show="registrationEnabled" name="userRegistration" novalidate>
+          <ion-content>
+            <div class="card">
+        
+              <div>
+                <div class="item item-divider">
+                  Register <span ng-show="authMessage" class="auth-message">{{authMessage}}</span>
+                </div>
+                <label class="item item-input">
+                  <i class=" icon ion-email placeholder-icon"></i>
+                  <input type="email" placeholder="E-mail" ng-model="registration.email">
+                </label>
+                <label class="item item-input">
+                  <input type="password" placeholder="Password" ng-model="registration.password">
+                </label>
               </div>
-              <label class="item item-input">
-                <i class=" icon ion-email placeholder-icon"></i>
-                <input type="email" placeholder="E-mail" ng-model="registration.email">
-              </label>
-              <label class="item item-input">
-                <input type="password" placeholder="Password" ng-model="registration.password">
-              </label>
+        
             </div>
-      
-          </div>
-      
-          <div class="list list-inset">
-            <button class="button button-calm button-block" ng-click="register()">Register</button>
-          </div>
-        </ion-content>
-      </form>
-    </div>
+        
+            <div class="list list-inset">
+              <button class="button button-calm button-block" ng-click="register()">Register</button>
+            </div>
+          </ion-content>
+        </form>
+      </div>
+    </ion-content>
 
     <ion-content ng-show="loggedIn">
       <div class="card">
