@@ -185,6 +185,7 @@ angular.module('controllers', [])
     $scope.lockup.location.coordinates = [];
     $scope.lockup.address = "";
     geolocate(function(position) {
+      $scope.processingLocation = false;
       $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
     }, function(err) {
       if (err) console.log(err);
@@ -199,8 +200,10 @@ angular.module('controllers', [])
 
   $scope.processLocation = function() {
 
+    $scope.processingLocation = true;
     if ($scope.locationQuery.text) {
       Lockup.geocode($scope.locationQuery.text).then(function(results) {
+        $scope.processingLocation = false;
         $scope.lockup.location.coordinates = [ results[0].geometry.location.A, results[0].geometry.location.k ];
         var formattedAddress = results[0].formatted_address;
         $scope.lockup.address = formattedAddress;
@@ -212,7 +215,8 @@ angular.module('controllers', [])
       $scope.locationQuery.text = "";
       $scope.lockup.location.coordinates = [];
       $scope.lockup.address = "";
-       geolocate(function(position) {
+      geolocate(function(position) {
+        $scope.processingLocation = false;
         $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
         $scope.processLocation();
       }, function(err) {
@@ -227,7 +231,9 @@ angular.module('controllers', [])
         };
 
         Lockup.reverseGeocode(LatLngCoords).then(function(results) {
+          $scope.processingLocation = false;
           var formattedAddress = results[0].formatted_address;
+          console.log(formattedAddress);
           $scope.lockup.address = formattedAddress;
           $scope.locationQuery.text = formattedAddress;
         }, function(err) {

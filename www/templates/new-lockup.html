@@ -8,11 +8,12 @@
         <div class="item item-divider">
           Location
         </div>
-        <label class="item item-input">
-          <i class=" icon ion-location placeholder-icon geocodeAddressIcon" ng-mousedown="processLocation()"></i>
-          <input required ng-blur="processLocation()" type="text" placeholder="Press for current location/enter address" ng-model="locationQuery.text">
+        <div class="item item-input">
+          <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-click="processLocation()">
+          </button>
+          <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current location or enter address'}}" ng-model="locationQuery.text">
           <i class="icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></i>
-        </label>
+        </div>
         <div class="item item-divider">
           Description
         </div>
