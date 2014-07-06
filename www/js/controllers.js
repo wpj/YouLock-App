@@ -165,8 +165,8 @@ angular.module('controllers', [])
       rackAmount: 1,
       lockupType: 2
     };
-    $scope.modal.show();
     User.loggedIn(function(user) {
+      $scope.modal.show();
       $scope.lockup.createdBy = user.id;
       geolocate(function(position) {
         $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
@@ -176,6 +176,7 @@ angular.module('controllers', [])
     }, function() {
       $scope.newLockupAttempt = true;
       $scope.authMessage = "required to add Lockup";
+      $scope.showAuthModal();
     });
   };
 

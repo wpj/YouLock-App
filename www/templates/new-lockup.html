@@ -3,7 +3,7 @@
     <h1 class="title">New Lockup</h1>
   </ion-header-bar>
   <form name="newLockupForm" novalidate>
-    <ion-content ng-show="lockup.createdBy">
+    <ion-content>
       <div class="card">
         <div class="item item-divider">
           Location
@@ -32,11 +32,12 @@
         </ul>
       </div>
     </ion-content>
-    <ion-content ng-hide="lockup.createdBy">
+
+    <!-- <ion-content ng-show="processingAuth">
       <h1 class="loadingSpinner">
         <i class="icon ion-loading-d"></i>
       </h1>
-    </ion-content>
+    </ion-content> -->
   </form>
   <ion-footer-bar class="bar-dark">
     <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>
