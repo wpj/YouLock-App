@@ -1,6 +1,6 @@
 angular.module('controllers', [])
 
-.controller('MapCtrl', ['$scope', '$rootScope', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', '$cordovaKeyboard', 'Lockup', 'Report', 'User', 'Analytics', '$log', function($scope, $rootScope, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, $cordovaKeyboard, Lockup, Report, User, Analytics, underscore, $log) {
+.controller('MapCtrl', ['$scope', '$rootScope', '$timeout', '$ionicLoading', '$ionicModal', '$ionicPopup', '$cordovaGeolocation', 'Lockup', 'Report', 'User', 'Analytics', '$log', function($scope, $rootScope, $timeout, $ionicLoading, $ionicModal, $ionicPopup, $cordovaGeolocation, Lockup, Report, User, Analytics, underscore, $log) {
   
   // $scope initialization
 
@@ -54,6 +54,10 @@ angular.module('controllers', [])
       noBackdrop: true,
       showBackdrop: false
     });
+
+    $timeout(function() {
+      $ionicLoading.hide();
+    }, 1000);
 
     geolocate(function(position) {
       console.log('Got position', position);
@@ -247,6 +251,7 @@ angular.module('controllers', [])
   };
 
   $scope.submitLockup = function() {
+    document.activeElement.blur();
     Lockup.submit($scope.lockup, function(data) {
       if (data.name === "ValidationError") {
         $ionicLoading.show({
@@ -347,7 +352,7 @@ angular.module('controllers', [])
 
   $scope.searchLocation = function() {
     if ($scope.searchText.length) {
-      if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
+      document.activeElement.blur();
       $ionicLoading.show({
         content: '<i class="icon ion-loading-c"></i>',
         noBackdrop: true,
@@ -406,6 +411,7 @@ angular.module('controllers', [])
    };
 
   var submitReport = function() {
+    document.activeElement.blur();
     Report.submit($scope.lockupReport, function(report) {
       console.log("Report submitted!", report);
     }, function(error) {
@@ -476,6 +482,7 @@ angular.module('controllers', [])
   };
 
   $scope.register = function() {
+    document.activeElement.blur();
     User.register($scope.registration, function(data) {
       // if (data.user) {
         $scope.loggedIn = true;
@@ -495,6 +502,7 @@ angular.module('controllers', [])
   };
 
   $scope.login = function() {
+    document.activeElement.blur();
     User.login($scope.loginCreds, function(data) {
       $scope.loggedIn = true;
       $scope.currentUser = data.user;
