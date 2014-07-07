@@ -35,7 +35,7 @@ angular.module('controllers', [])
   // Location processing
 
   var geolocate = function(success, errCb) {
-    $cordovaGeolocation.getCurrentPosition().then(function(position) {
+    $cordovaGeolocation.getCurrentPosition({ maximumAge: 0 }).then(function(position) {
       success(position);
     }, function(err) {
       errCb(err);
@@ -66,11 +66,14 @@ angular.module('controllers', [])
     }, function(err) {
       console.log("Position not found.");
       $ionicLoading.hide();
+      $scope.map.center = { latitude: 40.735666, longitude: -73.990341};
+      $scope.map.zoom = 16;
       showLocationErrorAlert();
     });
   };
 
   showLocationErrorAlert = function() {
+    $ionicLoading.hide();
     var locationErrorPopup = $ionicPopup.alert({
       title: 'Not found!',
       template: "Your location couldn't be found."
@@ -344,6 +347,7 @@ angular.module('controllers', [])
 
   $scope.searchLocation = function() {
     if ($scope.searchText.length) {
+      if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
       $ionicLoading.show({
         content: '<i class="icon ion-loading-c"></i>',
         noBackdrop: true,
@@ -353,7 +357,6 @@ angular.module('controllers', [])
       Lockup.geocode($scope.searchText).then(function(data) {
         $ionicLoading.hide();
         $scope.map.center = { latitude: data[0].geometry.location.k, longitude: data[0].geometry.location.A };
-        if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) $cordovaKeyboard.close();
         // send geocoded address to server for analytics
         Analytics.sendAddress(data[0].geometry.location.k, data[0].geometry.location.A);
       }, function(err) {

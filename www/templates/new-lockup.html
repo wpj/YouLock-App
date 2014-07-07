@@ -1,24 +1,25 @@
 <div class="modal">
   <ion-header-bar class="bar-dark">
     <h1 class="title">New Lockup</h1>
+    <!-- <button class="button" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()">Clear form</button> -->
   </ion-header-bar>
   <form name="newLockupForm" novalidate>
     <ion-content>
       <div class="card">
         <div class="item item-divider">
-          Location
+          <span>Location</span>
+          <button class="input-button button-icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></button>
         </div>
         <div class="item item-input">
           <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-click="processLocation()">
           </button>
           <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current location or enter address'}}" ng-model="locationQuery.text">
-          <button class="input-button button-icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></button>
         </div>
         <div class="item item-divider">
-          Description
+          <span>Description</span>
         </div>
         <label class="item item-input">
-          <textarea required placeholder="Description" ng-model="lockup.description" rows="3"></textarea>
+          <textarea required placeholder='"Street sign on the corner", "Fence in front of 123 Fake St"' ng-model="lockup.description" rows="3"></textarea>
         </label>
       </div>
 
