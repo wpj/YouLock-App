@@ -471,14 +471,6 @@ angular.module('controllers', [])
     };
   };
 
-  var blur = function(selector) {
-    var nodeList = document.querySelectorAll(selector);
-    _.each(nodeList, function(node) {
-      console.log("Blurring " + node);
-      node.blur();
-    });
-  };
-
   $scope.closeAuthModal = function() {
     $scope.authModal.hide();
     $scope.registration.email = '';
@@ -487,6 +479,14 @@ angular.module('controllers', [])
     $scope.loginCreds.password = '';
     $scope.authMessage = '';
     $scope.newLockupAttempt = false;
+  };
+
+  var blur = function(selector) {
+    var nodeList = document.querySelectorAll(selector);
+    _.each(nodeList, function(node) {
+      console.log("Blurring " + node);
+      node.blur();
+    });
   };
 
   $scope.register = function() {
