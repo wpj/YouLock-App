@@ -8,7 +8,8 @@ angular.module('controllers', [])
     control: {},
     zoom: 16,
     options: {
-      disableDefaultUI: true
+      disableDefaultUI: true,
+      minZoom: 14
     },
     idKey: '_id',
     events: {
