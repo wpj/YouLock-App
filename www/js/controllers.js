@@ -474,7 +474,17 @@ angular.module('controllers', [])
 
   $scope.register = function() {
     User.register($scope.registration, function(data) {
-      console.log(data);
+      // if (data.user) {
+        $scope.loggedIn = true;
+        $scope.currentUser = data.user;
+        $scope.registrationEnabled = false;
+        $scope.loginEnabled = true;
+        console.log($scope.currentUser);
+        $scope.registration = {
+          email: '',
+          password: ''
+        };
+      // }
     }, function(error) {
       console.log(error);
       $scope.authMessage = error.info.signupMessage;
