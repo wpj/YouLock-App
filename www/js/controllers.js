@@ -471,6 +471,14 @@ angular.module('controllers', [])
     };
   };
 
+  var blur = function(selector) {
+    var nodeList = document.querySelectorAll(selector);
+    _.each(nodeList, function(node) {
+      console.log("Blurring " + node);
+      node.blur();
+    });
+  };
+
   $scope.closeAuthModal = function() {
     $scope.authModal.hide();
     $scope.registration.email = '';
@@ -482,7 +490,7 @@ angular.module('controllers', [])
   };
 
   $scope.register = function() {
-    document.activeElement.blur();
+    blur('.authInput');
     User.register($scope.registration, function(data) {
       // if (data.user) {
         $scope.loggedIn = true;
@@ -502,7 +510,7 @@ angular.module('controllers', [])
   };
 
   $scope.login = function() {
-    document.activeElement.blur();
+    blur('.authInput');
     User.login($scope.loginCreds, function(data) {
       $scope.loggedIn = true;
       $scope.currentUser = data.user;
