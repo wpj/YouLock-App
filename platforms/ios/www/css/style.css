@@ -11,13 +11,14 @@ textarea {
   border-top: 1px solid #eee;
 }
 
-.geocodeAddressIcon {
-  font-size: 1.5em;
-  color: red;
-}
+/*.geocodeAddressIcon {
+  text-align: center;
+  color: white;
+}*/
 
 #clearGeocodeForm {
-  margin-right: 0.6em;
+  float: right;
+  /*margin-right: 0.6em;*/
 }
 
 .pac-container {
@@ -44,4 +45,20 @@ textarea {
 .auth-message {
   color: red;
   font-weight: bolder;
+}
+
+.button-holder {
+  /*float: right;*/
+  height: 10px;
+}
+
+.geocodeAddressIcon {
+  font-size: 25px;
+  /*color: white !important;
+  background: #EF4E3A !important;*/
+  /*border: 1px solid red !important;*/
+}
+
+h1.loadingSpinner {
+  text-align: center;
 }

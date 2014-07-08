@@ -32,7 +32,7 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.ionic.keyboard": "0.0.1",
+    "com.ionic.keyboard": "1.0.2",
     "org.apache.cordova.console": "0.2.9",
     "org.apache.cordova.device": "0.2.10"
 }
