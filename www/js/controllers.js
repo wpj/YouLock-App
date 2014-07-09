@@ -184,7 +184,7 @@ angular.module('controllers', [])
     }, function() {
       $scope.newLockupAttempt = true;
       $scope.authMessage = "required to add Lockup";
-      $scope.showAuthModal();
+      // $scope.showAuthModal();
     });
   };
 
@@ -485,7 +485,6 @@ angular.module('controllers', [])
   var blur = function(selector) {
     var nodeList = document.querySelectorAll(selector);
     _.each(nodeList, function(node) {
-      console.log("Blurring " + node);
       node.blur();
     });
   };
@@ -506,7 +505,7 @@ angular.module('controllers', [])
       // }
     }, function(error) {
       console.log(error);
-      $scope.authMessage = error.info.signupMessage;
+      $scope.authMessage = error.info.signupMessage || "username/password invalid";
     });
   };
 
@@ -521,14 +520,10 @@ angular.module('controllers', [])
       };
       if ($scope.authMessage) {
         $scope.authMessage = "";
-        if ($scope.newLockupAttempt) {
-          $scope.closeAuthModal();
-          $scope.newLockup();
-          $scope.newLockupAttempt = false;
-        }
+        if ($scope.newLockupAttempt) $scope.newLockupAttempt = false;
       }
     }, function(error) {
-      $scope.authMessage = error.info.loginMessage;
+      $scope.authMessage = error.info.loginMessage || "email/password is incorrect";
       console.log("Error: ", error);
     });
   };

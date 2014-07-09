@@ -1,6 +1,6 @@
 <div class="modal">
   <ion-header-bar class="bar-dark">
-    <h1 class="title">Account</h1>
+    <h1 class="title">Dashboard</h1>
     <button ng-if="registrationEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Login</button>
     <button ng-if="loginEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Register</button>
   </ion-header-bar>
@@ -35,6 +35,19 @@
             <div class="list list-inset">
               <button class="button button-balanced button-block" ng-click="login()">Login</button>
             </div>
+
+            <div class="list list-inset">
+              <div class="item item-divider">
+                Actions
+              </div>
+              <div class="item item-button-right">
+                Add a new Lockup
+                <button ng-click="newLockup()" class="button button-positive">
+                  <i class="icon ion-plus-round"></i>
+                </button>
+              </div>
+            </div>
+
           </ion-content>
         </form>
         
@@ -76,6 +89,18 @@
       </div>
       <div class="list list-inset">
         <button class="button button-assertive button-block" ng-click="logout()">Logout</button>
+      </div>
+
+      <div class="list list-inset">
+        <div class="item item-divider">
+          Actions
+        </div>
+        <div class="item item-button-right">
+          Add a new Lockup
+          <button ng-click="newLockup()" class="button button-positive">
+            <i class="icon ion-plus-round"></i>
+          </button>
+        </div>
       </div>
     </ion-content>
 
