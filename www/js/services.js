@@ -145,29 +145,3 @@ angular.module('services', [])
 }])
 
 .constant('ServerUrl', 'http://youlock.herokuapp.com/');
-// .constant('ServerUrl', 'http://localhost:8080/');
-
-// .factory('Geocode', ['$q', function($q) {
-  
-//   var Geocode = {
-//     fromAddress: function(address, callback) {
-//       var geocoder = new google.maps.Geocoder();
-//       geocoder.geocode({ address: address }, function(results, status) {
-//         callback(results, status);
-//       });
-//     },
-//     fromCoords: function(coords) {
-//       var geocoder = new google.maps.Geocoder();
-//       var deferred = $q.defer();
-//       geocoder.geocode({ latLng: coords }, function(results, status) {
-//         if (status === "OK") {
-//           return deferred.resolve(results);
-//         }
-//         return deferred.reject();
-//       });
-//       return deferred.promise();
-//     }
-//   };
-
-//   return Geocode;
-// }]);
