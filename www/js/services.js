@@ -145,5 +145,5 @@ angular.module('services', [])
 }])
 
 
-.constant('ServerUrl', '/');
+.constant('ServerUrl', 'http://www.youlock.co/');
 // .constant('ServerUrl', 'http://localhost:8080/');
