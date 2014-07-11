@@ -45,7 +45,7 @@ angular.module('controllers', [])
 
   $scope.getPosition = function() {
 
-    console.log("Centering");
+    // console.log("Centering");
     if (!$scope.map) {
       return;
     }
@@ -61,7 +61,7 @@ angular.module('controllers', [])
     }, 1000);
 
     geolocate(function(position) {
-      console.log('Got position', position);
+      // console.log('Got position', position);
       $scope.map.center = { latitude: position.coords.latitude, longitude: position.coords.longitude };
       $scope.map.zoom = 17;
       $ionicLoading.hide();
@@ -69,7 +69,7 @@ angular.module('controllers', [])
       // send location to server for analytics
       Analytics.sendLocation(position.coords.latitude, position.coords.longitude);
     }, function(err) {
-      console.log("Position not found.");
+      // console.log("Position not found.");
       $ionicLoading.hide();
       $scope.map.center = { latitude: 40.735666, longitude: -73.990341};
       $scope.map.zoom = 16;
@@ -92,10 +92,10 @@ angular.module('controllers', [])
     Lockup.findAll()
       .success(function(data) {
         $scope.lockups = data;
-        console.log($scope.lockups);
+        // console.log($scope.lockups);
       })
       .error(function(err, status) {
-        console.log(error, status);
+        // console.log(error, status);
       });
   };
 
@@ -154,7 +154,7 @@ angular.module('controllers', [])
         // console.log('Transmitted data: ', data);
       })
       .error(function(err, status) {
-        console.log(err, status);
+        // console.log(err, status);
       });
   };
 
@@ -179,7 +179,7 @@ angular.module('controllers', [])
       geolocate(function(position) {
         $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
       }, function(err) {
-        if (err) console.log(err);
+        if (err) showLocationErrorAlert();
       });
     }, function() {
       $scope.newLockupAttempt = true;
@@ -217,7 +217,11 @@ angular.module('controllers', [])
         $scope.lockup.address = formattedAddress;
         $scope.locationQuery.text = formattedAddress;
       }, function(err) {
-        console.log("Address not found.");
+        $ionicLoading.show({
+          template: 'Address not found',
+          duration: 1000,
+          noBackdrop: true
+        });
       });
     } else if ($scope.locationQuery.text === undefined) {
       $scope.locationQuery.text = "";
@@ -228,7 +232,7 @@ angular.module('controllers', [])
         $scope.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude];
         $scope.processLocation();
       }, function(err) {
-        if (err) console.log(err);
+        if (err) showLocationErrorAlert();
       });
     } else {
       var coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/;
@@ -241,7 +245,7 @@ angular.module('controllers', [])
         Lockup.reverseGeocode(LatLngCoords).then(function(results) {
           $scope.processingLocation = false;
           var formattedAddress = results[0].formatted_address;
-          console.log(formattedAddress);
+          // console.log(formattedAddress);
           $scope.lockup.address = formattedAddress;
           $scope.locationQuery.text = formattedAddress;
         }, function(err) {
@@ -283,7 +287,11 @@ angular.module('controllers', [])
         $scope.locationQuery.text = "";
       }
     }, function(err) {
-      console.log("Lockup not created!", err);
+      $ionicLoading.show({
+        template: 'Lockup not created',
+        duration: 100,
+        noBackdrop: true
+      });
     });
   };
 
@@ -324,7 +332,7 @@ angular.module('controllers', [])
   $scope.openLockupInfoModal = function($markerModel) {
     $ionicLoading.hide();
     $scope.currentLockup = $markerModel;
-    console.log("$scope.currentLockup: ", $scope.currentLockup);
+    // console.log("$scope.currentLockup: ", $scope.currentLockup);
     $scope.infoModal.show();
     // increment the current lockup's page views on the server
     Analytics.incrementPageViews($scope.currentLockup);
@@ -367,7 +375,12 @@ angular.module('controllers', [])
         Analytics.sendAddress(data[0].geometry.location.k, data[0].geometry.location.A);
       }, function(err) {
         $ionicLoading.hide();
-        console.log("Not found!");
+        $ionicLoading.show({
+          template: 'The address you searched for was not found',
+          duration: 800,
+          noBackdrop: true
+        });
+        // console.log("Not found!");
       });
     }
   };
@@ -414,9 +427,17 @@ angular.module('controllers', [])
   var submitReport = function() {
     document.activeElement.blur();
     Report.submit($scope.lockupReport, function(report) {
-      console.log("Report submitted!", report);
+      $ionicLoading.show({
+        template: 'Report submitted',
+        duration: 800,
+        noBackdrop: true
+      });
     }, function(error) {
-      console.log(error);
+      $ionicLoading.show({
+        template: 'Report submission failed',
+        duration: 800,
+        noBackdrop: true
+      });
     });
   };
 
@@ -497,14 +518,14 @@ angular.module('controllers', [])
         $scope.currentUser = data.user;
         $scope.registrationEnabled = false;
         $scope.loginEnabled = true;
-        console.log($scope.currentUser);
+        // console.log($scope.currentUser);
         $scope.registration = {
           email: '',
           password: ''
         };
       // }
     }, function(error) {
-      console.log(error);
+      // console.log(error);
       $scope.authMessage = error.info.signupMessage || "username/password invalid";
     });
   };
@@ -524,16 +545,16 @@ angular.module('controllers', [])
       }
     }, function(error) {
       $scope.authMessage = error.info.loginMessage || "email/password is incorrect";
-      console.log("Error: ", error);
+      // console.log("Error: ", error);
     });
   };
 
   $scope.logout = function() {
     User.logout(function(data) {
       $scope.loggedIn = false;
-      console.log(data);
+      // console.log(data);
     }, function(error) {
-      console.log(error);
+      // console.log(error);
     });
   };
 
