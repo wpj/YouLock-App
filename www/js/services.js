@@ -99,7 +99,7 @@ angular.module('services', [])
           notLoggedInCb();
         }
       }).error(function(err) {
-        console.log(err);
+        // console.log(err);
       });
     }
   };
@@ -111,9 +111,9 @@ angular.module('services', [])
   var Analytics = {
     incrementPageViews: function(lockup) {
       $http.get(ServerUrl + 'api/analytics/lockups/' + lockup._id).success(function(response) {
-        console.log(response);
+        // console.log(response);
       }).error(function(err) {
-        console.log(err);
+        // console.log(err);
       });
     },
     sendLocation: function(lat, lng) {
@@ -123,9 +123,9 @@ angular.module('services', [])
           lng: lng
         }
       }).success(function(response) {
-        console.log(response);
+        // console.log(response);
       }).error(function(err) {
-        console.log(err);
+        // console.log(err);
       });
     },
     sendAddress: function(lat, lng) {
@@ -135,14 +135,15 @@ angular.module('services', [])
           lng: lng
         }
       }).success(function(response) {
-        console.log(response);
+        // console.log(response);
       }).error(function(err) {
-        console.log(err);
+        // console.log(err);
       });
     }
   };
   return Analytics;
 }])
 
-.constant('ServerUrl', 'http://youlock.herokuapp.com/');
+
+.constant('ServerUrl', '/');
 // .constant('ServerUrl', 'http://localhost:8080/');
