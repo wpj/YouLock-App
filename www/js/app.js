@@ -39,3 +39,9 @@ angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directive
     }
   });
 }]);
+
+angular.element(document).ready(function() {
+  document.addEventListener('deviceready', function() {
+    angular.bootstrap(document, ['lockupFront']);
+  });
+});
