@@ -12,7 +12,7 @@
         <div class="item item-input">
           <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-class="{glow: !lockup.address}" ng-click="processLocation()">
           </button>
-          <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current location/enter address'}}" ng-model="locationQuery.text">
+          <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current or enter address'}}" ng-model="locationQuery.text">
         </div>
         <div class="item item-divider">
           <span>Description</span>
