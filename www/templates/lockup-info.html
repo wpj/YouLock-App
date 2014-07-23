@@ -9,9 +9,10 @@
         </div>
         <div class="item item-text-wrap">
           <img ng-src="{{currentLockup.icon}}">
-          <span ng-show="ifSFRack()">City bike rack near </span>
-          <span ng-hide="ifCityRack()">{{currentLockup.description}}</span>
+          <span ng-show="ifUserLockup()">{{currentLockup.description}}</span>
           <span ng-show="ifCityRack()">CityRack</span>
+          <span ng-show="ifSFRack()">City bike rack near {{currentLockup.description}}</span>
+          <span ng-show="ifChiRack() || ifDCRack()">City bike rack</span>
         </div>
         <div class="item item-divider">
           Address
