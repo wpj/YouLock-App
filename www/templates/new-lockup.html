@@ -10,7 +10,7 @@
           <button class="input-button button-icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></button>
         </div>
         <div class="item item-input">
-          <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-click="processLocation()">
+          <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-class="{glow: !lockup.address}" ng-click="processLocation()">
           </button>
           <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current location/enter address'}}" ng-model="locationQuery.text">
         </div>
