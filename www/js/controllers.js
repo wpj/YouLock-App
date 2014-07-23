@@ -124,19 +124,27 @@ angular.module('controllers', [])
         // });
 
         var sortedData = _.groupBy(data, "lockupType");
-        var cityRacksWithIcon = _.each(sortedData[1], function(lockup) {
-          lockup.icon = 'img/blue.png';
-        });
-        var userLockupsWithIcon = _.each(sortedData[2], function(lockup) {
+        var userLockups = _.each(sortedData[2], function(lockup) {
           lockup.icon = 'img/red.png';
+        });
+        var cityRacks = _.each(sortedData[1], function(lockup) {
+          lockup.icon = 'img/blue.png';
         });
         var sfRacks = _.each(sortedData[3], function(lockup) {
           lockup.icon = 'img/blue.png';
         });
+        var chiRacks = _.each(sortedData[4], function(lockup) {
+          lockup.icon = 'img/blue.png';
+        });
+        var dcRacks = _.each(sortedData[5], function(lockup) {
+          lockup.icon = 'img/blue.png';
+        });
 
-        $scope.cityRacks = cityRacksWithIcon ? cityRacksWithIcon : [];
-        $scope.userLockups = userLockupsWithIcon ? userLockupsWithIcon : [];
+        $scope.userLockups = userLockups ? userLockups : [];
+        $scope.cityRacks = cityRacks ? cityRacks : [];
         $scope.sfRacks = sfRacks ? sfRacks : [];
+        $scope.chiRacks = chiRacks ? chiRacks : [];
+        $scope.dcRacks = dcRacks ? dcRacks : [];
 
          // Logic for caching markers already on the map (doesn't work yet) 
 
