@@ -130,9 +130,13 @@ angular.module('controllers', [])
         var userLockupsWithIcon = _.each(sortedData[2], function(lockup) {
           lockup.icon = 'img/red.png';
         });
+        var sfRacks = _.each(sortedData[3], function(lockup) {
+          lockup.icon = 'img/blue.png';
+        });
 
         $scope.cityRacks = cityRacksWithIcon ? cityRacksWithIcon : [];
         $scope.userLockups = userLockupsWithIcon ? userLockupsWithIcon : [];
+        $scope.sfRacks = sfRacks ? sfRacks : [];
 
          // Logic for caching markers already on the map (doesn't work yet) 
 
@@ -346,6 +350,10 @@ angular.module('controllers', [])
 
   $scope.ifCityRack = function() {
     if ($scope.currentLockup) return $scope.currentLockup.lockupType === 1;
+  };
+
+  $scope.ifSFRack = function() {
+    if ($scope.currentLockup) return $scope.currentLockup.lockupType === 3;
   };
 
   // Search

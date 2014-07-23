@@ -9,6 +9,7 @@
         </div>
         <div class="item item-text-wrap">
           <img ng-src="{{currentLockup.icon}}">
+          <span ng-show="ifSFRack()">City bike rack near </span>
           <span ng-hide="ifCityRack()">{{currentLockup.description}}</span>
           <span ng-show="ifCityRack()">CityRack</span>
         </div>
