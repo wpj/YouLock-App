@@ -1,4 +1,4 @@
-Ionic App Base
+YouLock
 =====================
 
 Repo for the [YouLock](http://www.youlock.co) hybrid iOS app.
