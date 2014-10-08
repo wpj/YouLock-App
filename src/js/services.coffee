@@ -16,7 +16,7 @@ angular.module('services', [])
           NELat: NELat
 
     submit: (lockup) ->
-      $http.post "{ServerUrl}api/lockups", lockup
+      $http.post "#{ServerUrl}api/lockups", lockup
 
     geocode: (address) ->
       deferred = $q.defer()

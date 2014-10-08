@@ -184,8 +184,8 @@ angular.module('controllers', [])
 ]
 
 .controller 'SubmissionCtrl',
-  ['$scope', 'Lockup', 'geolocate',
-  ($scope, Lockup, geolocate) ->
+  ['$scope', 'Lockup', 'geolocate', "$ionicLoading"
+  ($scope, Lockup, geolocate, $ionicLoading) ->
 
     $scope.locationQuery = text: ""
 
@@ -253,13 +253,13 @@ angular.module('controllers', [])
               duration: 800
               noBackdrop: true
           else
-            data.icon = 'img/red.png'
+            data.data.icon = 'img/red.png'
             $ionicLoading.show
               template: 'Lockup created'
               duration: 800
               noBackdrop: true
 
-            $scope.userLockups.push data
+            $scope.data.userLockups.push data.data
             $scope.modal.hide()
 
             $scope.data.lockup =
