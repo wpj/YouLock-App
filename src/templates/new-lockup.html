@@ -30,15 +30,9 @@
         <div class="item item-text-wrap"><strong>Description:</strong> {{data.lockup.description}}</div>
       </div>
     </ion-content>
-
-    <!-- <ion-content ng-show="processingAuth">
-      <h1 class="loadingSpinner">
-        <i class="icon ion-loading-d"></i>
-      </h1>
-    </ion-content> -->
   </form>
   <ion-footer-bar class="bar-dark">
     <button ng-click="closeModal()" class="button button-icon icon ion-close-round"></button>
-    <button class="button button-icon icon ion-checkmark-round" ng-click="submitLockup(lockup)" ng-disabled="newLockupForm.$invalid"></button>
+    <button class="button button-icon icon ion-checkmark-round" ng-click="submitLockup()" ng-disabled="newLockupForm.$invalid"></button>
   </ion-footer-bar>
 </div>
