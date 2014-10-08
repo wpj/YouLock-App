@@ -14,6 +14,16 @@ angular.module('services', [])
           SWLat: SWLat
           NELng: NELng
           NELat: NELat
+      .then (response) ->
+        sortedData = _.groupBy response.data, 'lockupType'
+
+        userLockups: _.each sortedData[2], (lockup) -> lockup.icon = 'img/red.png'
+        cityRacks: _.each sortedData[1], (lockup) -> lockup.icon = 'img/blue.png'
+        sfRacks: _.each sortedData[3], (lockup) -> lockup.icon = 'img/blue.png'
+        chiRacks: _.each sortedData[4], (lockup) -> lockup.icon = 'img/blue.png'
+        dcRacks: _.each sortedData[5], (lockup) -> lockup.icon = 'img/blue.png'
+
+      # .catch (error) ->
 
     submit: (lockup) ->
       $http.post "#{ServerUrl}api/lockups", lockup

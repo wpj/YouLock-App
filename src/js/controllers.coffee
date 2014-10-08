@@ -21,9 +21,6 @@ angular.module('controllers', [])
     $scope.userMessages = {}
     $scope.status = {}
 
-    # initialize map on controller instantiation
-    # getPosition()
-
     # map functions
 
     showLocationErrorAlert = ->
@@ -57,7 +54,9 @@ angular.module('controllers', [])
           $scope.map.zoom = 16
           showLocationErrorAlert()
 
+    # initialize map on controller instantiation
     getPosition()
+    
     $scope.getPosition = getPosition
 
     searchInMapBounds = (map) ->
@@ -71,22 +70,15 @@ angular.module('controllers', [])
       NELat = northEast.lat()
 
       Lockup.findInMapArea SWLng, SWLat, NELng, NELat
-        .then (response) ->
-          sortedData = _.groupBy response.data, 'lockupType'
-          userLockups = _.each sortedData[2], (lockup) -> lockup.icon = 'img/red.png'
-          cityRacks = _.each sortedData[1], (lockup) -> lockup.icon = 'img/blue.png'
-          sfRacks = _.each sortedData[3], (lockup) -> lockup.icon = 'img/blue.png'
-          chiRacks = _.each sortedData[4], (lockup) -> lockup.icon = 'img/blue.png'
-          dcRacks = _.each sortedData[5], (lockup) -> lockup.icon = 'img/blue.png'
-
-          $scope.data.userLockups = if userLockups? then userLockups else []
-          $scope.data.cityRacks = if cityRacks? then cityRacks else []
-          $scope.data.sfRacks = if sfRacks? then sfRacks else []
-          $scope.data.chiRacks = if chiRacks? then chiRacks else []
-          $scope.data.dcRacks = if dcRacks? then dcRacks else []
+        .then (data) ->
+          $scope.data.userLockups = if data.userLockups? then data.userLockups else []
+          $scope.data.cityRacks = if data.cityRacks? then data.cityRacks else []
+          $scope.data.sfRacks = if data.sfRacks? then data.sfRacks else []
+          $scope.data.chiRacks = if data.chiRacks? then data.chiRacks else []
+          $scope.data.dcRacks = if data.dcRacks? then data.dcRacks else []
 
         .catch (error) ->
-          # console.log err, status
+          # TODO: handle error
 
     # configure modals
     $ionicModal.fromTemplateUrl 'new-lockup.html',
