@@ -1,13 +1,11 @@
 {
   "name": "HelloIonic",
   "private": "true",
-  "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.8"
-  },
   "dependencies": {
     "angular-google-maps": "1.1.4",
     "underscore": "~1.6.0",
     "ngCordova": "~0.1.2-alpha",
-    "ngAutocomplete": "~1.0.0"
+    "ngAutocomplete": "~1.0.0",
+    "ionic": "~0.9.27"
   }
 }

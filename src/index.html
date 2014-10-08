@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>youLock</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, height=device-height">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>youLock</title>
+
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+    <link href="css/application.css" rel="stylesheet">
+
+    <!-- google maps API -->
+    <script src='http://maps.googleapis.com/maps/api/js?v=3.16&libraries=places&sensor=true'></script>
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- third party libraries -->
+    <script src="lib/lodash/dist/lodash.min.js"></script>
+    <script src="lib/angular-google-maps/dist/angular-google-maps.min.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+    <script src="lib/ngAutocomplete/src/ngAutocomplete.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/templates.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <!--<script src="cordova.js"></script>-->
+  </head>
+  <body ng-controller="MapCtrl">
+
+    <form ng-submit="searchLocation()">
+      <ion-header-bar class="item-input-inset">
+          <label class="item-input-wrapper">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input ng-model="searchText" id="searchBar" type="search" placeholder="Search by address" autocapitalize="off" autocorrect="off">
+            <button class="input-button button-icon ion-close-circled" ng-if="searchIsActive()" ng-mousedown="resetSearch()"></button>
+          </label>
+          <button type="submit" class="button button-clear" ng-disabled="!searchText.length">Search</button>
+      </ion-header-bar>
+    </form>
+    
+    <ion-content scroll="false" ng-init="getPosition()" data-tap-disabled="true">
+
+      <google-map
+        center="map.center"
+        zoom="map.zoom"
+        draggable="true"
+        options="map.options"
+        events="map.events"
+        control="map.control"
+        ng-if="map.center"
+        >
+        <markers models="data.cityRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true, zoomOnClick:false, minimumClusterSize:10}" icon="'icon'"></markers>
+        <markers models="data.userLockups" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true, zoomOnClick:false, minimumClusterSize:10}" icon="'icon'"></markers>
+        <markers models="data.sfRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true, zoomOnClick:false, minimumClusterSize:10}" icon="'icon'"></markers>
+        <markers models="data.chiRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true, zoomOnClick:false, minimumClusterSize:10}" icon="'icon'"></markers>
+        <markers models="data.dcRacks" click="openLockupInfoModal" idKey="map.idKey" coords="'location'" doCluster="true" clusterOptions="{maxZoom:16, averageCenter:true, zoomOnClick:false, minimumClusterSize:10}" icon="'icon'"></markers>
+      </google-map>
+
+    </ion-content>
+    
+    <ion-footer-bar class="bar-positive">
+      <div class="button-bar">
+        <button ng-click="showAuthModal()" class="button button-icon icon ion-grid"></button>
+        <button ng-click="getPosition()" class="button button-icon icon ion-navigate"></button>
+      </div>
+    </ion-footer-bar>
+    
+  </body>
+</html>

@@ -27,3 +27,5 @@ platforms/
 plugins/
 
 .idea
+www/
+www/lib

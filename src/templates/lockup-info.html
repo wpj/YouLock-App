@@ -1,0 +1,41 @@
+<div class="modal" ng-controller="LockupInfoCtrl">
+  <ion-header-bar class="bar-energized">
+    <h1 class="title">Lockup Info</h1>
+  </ion-header-bar>
+    <ion-content>
+      <div class="card">
+        <div class="item item-divider">
+          Description
+        </div>
+        <div class="item item-text-wrap">
+          <img ng-src="{{data.currentLockup.icon}}">
+          <span ng-show="ifUserLockup()">{{data.currentLockup.description}}</span>
+          <span ng-show="ifCityRack()">CityRack</span>
+          <span ng-show="ifSFRack()">City bike rack near {{data.currentLockup.description}}</span>
+          <span ng-show="ifChiRack() || ifDCRack()">City bike rack</span>
+        </div>
+        <div class="item item-divider">
+          Address
+        </div>
+        <div class="item item-text-wrap">
+          {{data.currentLockup.address}}
+        </div>
+        <div class="item item-divider">
+          Number of lockups
+        </div>
+        <div class="item item-text-wrap">
+          {{data.currentLockup.rackAmount}}
+        </div>
+        <div class="item item-divider">
+          Pageviews
+        </div>
+        <div class="item item-text-wrap">
+          {{data.currentLockup.pageViews}}
+        </div>
+      </div>
+    </ion-content>
+  <ion-footer-bar class="bar-energized">
+    <button ng-click="closeLockupInfoModal()" class="button button-icon icon ion-close-round"></button>
+    <button class="button button-icon icon ion-alert-circled" ng-click="showReportPopup()"></button>
+  </ion-footer-bar>
+</div>
