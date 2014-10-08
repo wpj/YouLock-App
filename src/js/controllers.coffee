@@ -159,7 +159,6 @@ angular.module('controllers', [])
 
     $scope.searchLocation = ->
       if $scope.searchText.length
-        document.activeElement.blur()
         $ionicLoading.show
           content: '<i class="icon ion-loading-c></i>'
           noBackdrop: true
@@ -243,7 +242,7 @@ angular.module('controllers', [])
               # handle error
 
     $scope.submitLockup = ->
-      document.activeElement.blur()
+      # possible put back blur on form input elements
       Lockup.submit $scope.data.lockup
         .then (data) ->
           if data.name is "ValidationError"
@@ -358,13 +357,7 @@ angular.module('controllers', [])
       $scope.userMessages.authMessage = ''
       $scope.newLockupAttempt = false
 
-    blur = (selector) ->
-      nodeList = document.querySelectorAll selector
-      _.each nodeList, (node) ->
-        node.blur()
-
     $scope.register = ->
-      blur '.authInput'
       User.register $scope.registration
         .then (response) ->
           $scope.loggedIn = true
@@ -379,7 +372,6 @@ angular.module('controllers', [])
           $scope.userMessages.authMessage = error.data.info.signupMessage or "username/password invalid"
 
     $scope.login = ->
-      blur '.authInput'
       User.login $scope.loginCreds
         .then (response) ->
           $scope.loggedIn = true
