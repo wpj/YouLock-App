@@ -21,6 +21,9 @@ angular.module('controllers', [])
     $scope.userMessages = {}
     $scope.status = {}
 
+    # initialize map on controller instantiation
+    # getPosition()
+
     # map functions
 
     showLocationErrorAlert = ->
@@ -29,7 +32,7 @@ angular.module('controllers', [])
         title: 'Not found!'
         template: "Your location couldn't be found."
 
-    $scope.getPosition = ->
+    getPosition = ->
       return unless $scope.map
 
       $ionicLoading.show
@@ -53,6 +56,9 @@ angular.module('controllers', [])
           $scope.map.center = latitude: 40.735666, longitude: -73.990341
           $scope.map.zoom = 16
           showLocationErrorAlert()
+
+    getPosition()
+    $scope.getPosition = getPosition
 
     searchInMapBounds = (map) ->
       currentMapArea = map.getBounds()
@@ -180,7 +186,6 @@ angular.module('controllers', [])
               template: 'The address you searched for was not found'
               duration: 800
               noBackdrop: true
-
 ]
 
 .controller 'SubmissionCtrl',
