@@ -227,18 +227,20 @@ angular.module('controllers', [])
           .catch (error) ->
             showLocationErrorAlert()
       else
-        LatLngCoords =
-          lat: $scope.data.lockup.location.coordinates[1]
-          lng: $scope.data.lockup.location.coordinates[0]
+        coordRegexp = /^(\-?\d+\.\d+?),*(\-?\d+\.\d+?)$/
+        if String($scope.data.lockup.location.coordinates).match coordRegexp
+          LatLngCoords =
+            lat: $scope.data.lockup.location.coordinates[1]
+            lng: $scope.data.lockup.location.coordinates[0]
 
-        Lockup.reverseGeocode LatLngCoords
-          .then (results) ->
-            $scope.processingLocation = false
-            formattedAddress = results[0].formatted_address
-            $scope.data.lockup.address = formattedAddress
-            $scope.locationQuery.text = formattedAddress
-          .catch (err) ->
-            # handle error
+          Lockup.reverseGeocode LatLngCoords
+            .then (results) ->
+              $scope.processingLocation = false
+              formattedAddress = results[0].formatted_address
+              $scope.data.lockup.address = formattedAddress
+              $scope.locationQuery.text = formattedAddress
+            .catch (err) ->
+              # handle error
 
     $scope.submitLockup = ->
       document.activeElement.blur()
