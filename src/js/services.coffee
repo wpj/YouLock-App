@@ -2,46 +2,46 @@ angular.module('services', [])
 
 .factory 'Lockup', ['$http', '$q', 'ServerUrl', ($http, $q, ServerUrl) ->
   geocoder = new google.maps.Geocoder()
-  {
-    findAll: ->
-      $http.get "{ServerUrl}api/lockups"
 
-    findInMapArea: (SWLng, SWLat, NELng, NELat) ->
-      $http.get "#{ServerUrl}api/lockups",
-        params:
-          filtered: true
-          SWLng: SWLng
-          SWLat: SWLat
-          NELng: NELng
-          NELat: NELat
-      .then (response) ->
-        sortedData = _.groupBy response.data, 'lockupType'
+  # service methods
+  findAll: ->
+    $http.get "{ServerUrl}api/lockups"
 
-        userLockups: _.each sortedData[2], (lockup) -> lockup.icon = 'img/red.png'
-        cityRacks: _.each sortedData[1], (lockup) -> lockup.icon = 'img/blue.png'
-        sfRacks: _.each sortedData[3], (lockup) -> lockup.icon = 'img/blue.png'
-        chiRacks: _.each sortedData[4], (lockup) -> lockup.icon = 'img/blue.png'
-        dcRacks: _.each sortedData[5], (lockup) -> lockup.icon = 'img/blue.png'
+  findInMapArea: (SWLng, SWLat, NELng, NELat) ->
+    $http.get "#{ServerUrl}api/lockups",
+      params:
+        filtered: true
+        SWLng: SWLng
+        SWLat: SWLat
+        NELng: NELng
+        NELat: NELat
+    .then (response) ->
+      sortedData = _.groupBy response.data, 'lockupType'
 
-      # .catch (error) ->
+      userLockups: _.each sortedData[2], (lockup) -> lockup.icon = 'img/red.png'
+      cityRacks: _.each sortedData[1], (lockup) -> lockup.icon = 'img/blue.png'
+      sfRacks: _.each sortedData[3], (lockup) -> lockup.icon = 'img/blue.png'
+      chiRacks: _.each sortedData[4], (lockup) -> lockup.icon = 'img/blue.png'
+      dcRacks: _.each sortedData[5], (lockup) -> lockup.icon = 'img/blue.png'
 
-    submit: (lockup) ->
-      $http.post "#{ServerUrl}api/lockups", lockup
+    # .catch (error) ->
 
-    geocode: (address) ->
-      deferred = $q.defer()
-      geocoder.geocode address: address, (results, status) ->
-        if status is "OK" then deferred.resolve results
-        else deferred.reject()
-      deferred.promise
+  submit: (lockup) ->
+    $http.post "#{ServerUrl}api/lockups", lockup
 
-    reverseGeocode: (coords) ->
-      deferred = $q.defer()
-      geocoder.geocode latLng: coords, (results, status) ->
-        if status is "OK" then deferred.resolve results
-        else deferred.reject()
-      deferred.promise
-  }
+  geocode: (address) ->
+    deferred = $q.defer()
+    geocoder.geocode address: address, (results, status) ->
+      if status is "OK" then deferred.resolve results
+      else deferred.reject()
+    deferred.promise
+
+  reverseGeocode: (coords) ->
+    deferred = $q.defer()
+    geocoder.geocode latLng: coords, (results, status) ->
+      if status is "OK" then deferred.resolve results
+      else deferred.reject()
+    deferred.promise
 ]
 
 .factory 'Report', ['$http', 'ServerUrl', ($http, ServerUrl) ->
