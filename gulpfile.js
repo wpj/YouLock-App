@@ -94,7 +94,7 @@ gulp.task('watch', function() {
   gulp.watch(['src/js/**', 'src/js/**/*.js'], ['js']);
   gulp.watch(['src/index.html'], ['views']);
   gulp.watch(['src/templates/**'], ['ng-templates']);
-  gulp.watch(['src/styles/**'], ['styles']);
+  gulp.watch(['src/css/**'], ['styles']);
 });
 
 gulp.task('default', ['browser-sync', 'build', 'watch']);
