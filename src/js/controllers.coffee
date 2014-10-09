@@ -92,30 +92,6 @@ angular.module('controllers', [])
     .then (modal) -> $scope.authModal = modal
 
     # open modals
-
-    $scope.openNewLockupForm = ->
-      $ionicLoading.hide()
-      $scope.data.lockup =
-        description: ""
-        address: ""
-        location:
-          type: "Point"
-          coordinates: []
-        rackAmount: 1
-        lockupType: 2
-      User.loggedIn()
-        .then (user) ->
-          $scope.modal.show()
-          $scope.data.lockup.createdBy = user.id
-          geolocate()
-            .then (position) ->
-              $scope.data.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude]
-            .catch (error) ->
-              showLocationErrorAlert()
-        .catch ->
-          $scope.newLockupAttempt = true
-          $scope.userMessages.authMessage = "required to add Lockup"    
-
     $scope.openLockupInfoModal = ($markerModel) ->
       $ionicLoading.hide()
       $scope.data.currentLockup = $markerModel
@@ -133,6 +109,7 @@ angular.module('controllers', [])
           $scope.processingAuth = false
           $scope.currentUser = user
           $scope.loggedIn = true
+          $scope.data.lockup.createdBy = user.id
         .catch (error) ->
           $scope.processingAuth = false
           $scope.loggedIn = false
@@ -188,7 +165,6 @@ angular.module('controllers', [])
       $scope.loginCreds.email = ''
       $scope.loginCreds.password = ''
       $scope.userMessages.authMessage = ''
-      $scope.newLockupAttempt = false
 
     $scope.register = ->
       User.register $scope.registration
@@ -214,7 +190,6 @@ angular.module('controllers', [])
             password: ''
           if $scope.userMessages.authMessage
             $scope.userMessages.authMessage = ""
-            $scope.newLockupAttempt = false if $scope.newLockupAttempt
         .catch (error) ->
           console.log error
           $scope.userMessages.authMessage = error.data.info.loginMessage or "email/password is incorrect"
@@ -228,10 +203,24 @@ angular.module('controllers', [])
 ]
 
 .controller 'SubmissionCtrl',
-  ['$scope', 'Lockup', 'geolocate', "$ionicLoading"
+  ['$scope', 'Lockup', 'geolocate', '$ionicLoading',
   ($scope, Lockup, geolocate, $ionicLoading) ->
 
     $scope.locationQuery = text: ""
+
+    $scope.data.lockup =
+      description: ""
+      address: ""
+      location:
+        type: "Point"
+        coordinates: []
+      rackAmount: 1
+      lockupType: 2
+
+    geolocate()
+      .then (position) ->
+        $scope.data.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude]
+      .catch (error) -> showLocationErrorAlert()
 
     $scope.clearGeocodeForm = ->
       $scope.locationQuery.text = ""
@@ -306,7 +295,7 @@ angular.module('controllers', [])
               noBackdrop: true
 
             $scope.data.userLockups.push data.data
-            $scope.modal.hide()
+            $scope.authModal.hide()
 
             $scope.data.lockup =
               description: ""
@@ -315,7 +304,6 @@ angular.module('controllers', [])
                 type: "Point"
                 coordinates: []
               rackAmount: 1
-              createdBy: ""
               lockupType: 2
 
             $scope.locationQuery.text = ""

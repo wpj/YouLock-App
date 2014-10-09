@@ -1,107 +1,100 @@
 <div class="modal" ng-controller="AuthCtrl">
   <ion-header-bar class="bar-dark">
-    <h1 class="title">Dashboard</h1>
-    <button ng-if="registrationEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Login</button>
+    <h1 class="title">{{ currentUser.email }}</h1>
+    <button ng-if="registrationEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Log in</button>
     <button ng-if="loginEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Register</button>
+    <button ng-if="loggedIn" class="button button-assertive" ng-click="logout()">Log out</button>
   </ion-header-bar>
-    <ion-content ng-show="processingAuth">
-      <h1 class="loadingSpinner">
-        <i class="icon ion-loading-d"></i>
-      </h1>
-    </ion-content>
+  
+  <ion-content ng-show="processingAuth">
+    <h1 class="loadingSpinner">
+      <i class="icon ion-loading-d"></i>
+    </h1>
+  </ion-content>
 
-    <ion-content ng-hide="processingAuth">
-      <div ng-hide="loggedIn">
-        <form ng-submit="login()" ng-show="loginEnabled" name="userLogin" blur-inputs novalidate>
-          <ion-content>
-            <div class="card">
-              
-              <div>
-                <div class="item item-divider">
-                  Login <span ng-show="userMessages.authMessage" class="auth-message">{{userMessages.authMessage}}</span>
-                </div>
-                <label class="item item-input">
-                  <i class="icon ion-email placeholder-icon"></i>
-                  <input class="authInput" type="email" placeholder="E-mail" ng-model="loginCreds.email">
-                </label>
-                <label class="item item-input">
-                  <input class="authInput" type="password" placeholder="Password" ng-model="loginCreds.password">
-                </label>
-              </div>
-        
-            </div>
-        
-            <div class="list list-inset">
-              <button type="submit" class="button button-balanced button-block">Login</button>
-            </div>
-
-            <div class="list list-inset">
+  <ion-content ng-hide="processingAuth">
+    <div ng-hide="loggedIn">
+      <div ng-show="loginEnabled">
+        <form ng-submit="login()" name="userLogin" blur-inputs novalidate>
+          <div class="card">
+            <div>
               <div class="item item-divider">
-                Actions
+                Login <span ng-show="userMessages.authMessage" class="auth-message">{{userMessages.authMessage}}</span>
               </div>
-              <div class="item item-button-right">
-                Add a new Lockup
-                <button ng-click="openNewLockupForm()" class="button button-stable">
-                  <i class="icon ion-plus-round"></i>
-                </button>
-              </div>
+              <label class="item item-input">
+                <input class="authInput" type="email" placeholder="E-mail" ng-model="loginCreds.email">
+              </label>
+              <label class="item item-input">
+                <input class="authInput" type="password" placeholder="Password" ng-model="loginCreds.password">
+              </label>
             </div>
-
-          </ion-content>
+          </div>
+            
+          <div class="list list-inset">
+            <button type="submit" class="button button-balanced button-block">Log in</button>
+          </div>
         </form>
         
-        <form ng-submit="register()" ng-show="registrationEnabled" name="userRegistration" blur-inputs novalidate>
-          <ion-content>
-            <div class="card">
-        
-              <div>
-                <div class="item item-divider">
-                  Register <span ng-show="userMessages.authMessage" class="auth-message">{{userMessages.authMessage}}</span>
-                </div>
-                <label class="item item-input">
-                  <i class=" icon ion-email placeholder-icon"></i>
-                  <input class="authInput" type="email" placeholder="E-mail" ng-model="registration.email">
-                </label>
-                <label class="item item-input">
-                  <input class="authInput" type="password" placeholder="Password" ng-model="registration.password">
-                </label>
-              </div>
-        
+        <div class="list list-inset">
+          <div class="item item-divider">
+            Actions
+          </div>
+          <div class="item item-button-right">
+            Add a new Lockup
+            <button ng-click="userMessages.authMessage = 'required to add Lockup'" class="button button-stable">
+              <i class="icon ion-plus-round"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <form ng-submit="register()" ng-show="registrationEnabled" name="userRegistration" blur-inputs novalidate>
+        <div class="card">
+          <div>
+            <div class="item item-divider">
+              Register <span ng-show="userMessages.authMessage" class="auth-message">{{userMessages.authMessage}}</span>
             </div>
-        
-            <div class="list list-inset">
-              <button type="submit" class="button button-calm button-block">Register</button>
-            </div>
-          </ion-content>
-        </form>
-      </div>
-    </ion-content>
+            <label class="item item-input">
+              <input class="authInput" type="email" placeholder="E-mail" ng-model="registration.email">
+            </label>
+            <label class="item item-input">
+              <input class="authInput" type="password" placeholder="Password" ng-model="registration.password">
+            </label>
+          </div>
+        </div>
+    
+        <div class="list list-inset">
+          <button type="submit" class="button button-calm button-block">Register</button>
+        </div>
+      </form>
+    </div>
+  </ion-content>
 
-    <ion-content ng-show="loggedIn">
-      <div class="card">
+  <ion-content ng-controller="SubmissionCtrl" ng-show="loggedIn">
+    <div class="list list-inset">
+      <h3 class="section-header">New Lockup</h3>
+    </div>
+    <div class="list list-inset">
+      <form name="newLockupForm" novalidate>
         <div class="item item-divider">
-          Email
+          <span>Location</span>
+          <button class="input-button button-icon ion-close-circled" id="clearGeocodeForm" ng-show="geocodeFormIsActive()" data-tap-disabled="true" ng-mousedown="clearGeocodeForm()"></button>
         </div>
-        <div class="item item-text-wrap">
-          <h3>{{currentUser.email}}</h3>
-        </div>
-      </div>
-      <div class="list list-inset">
-        <button class="button button-assertive button-block" ng-click="logout()">Logout</button>
-      </div>
-
-      <div class="list list-inset">
-        <div class="item item-divider">
-          Actions
-        </div>
-        <div class="item item-button-right">
-          Add a new Lockup
-          <button ng-click="openNewLockupForm()" class="button button-positive">
-            <i class="icon ion-plus-round"></i>
+        <div class="item item-input">
+          <button class="button button-clear button-assertive button-small button-icon ion-location placeholder-icon geocodeAddressIcon" ng-class="{glow: !data.lockup.address}" ng-click="processLocation()">
           </button>
+          <input required ng-blur="processLocation()" type="text" placeholder="{{processingLocation ? 'Processing...' : 'Use current or enter address'}}" ng-model="locationQuery.text">
         </div>
-      </div>
-    </ion-content>
+        <div class="item item-divider">
+          <span>Description</span>
+        </div>
+        <label class="item item-input">
+          <textarea required placeholder='"Street sign on the corner", "Fence in front of 123 Fake St"' ng-model="data.lockup.description" rows="3"></textarea>
+        </label>
+        <button ng-click="submitLockup()" type="submit" class="button button-positive button-block" ng-disabled="newLockupForm.$invalid">Submit</button>
+      </form>
+    </div>
+  </ion-content>
 
   <ion-footer-bar class="bar-dark">
     <button ng-click="closeAuthModal()" class="button button-icon icon ion-close-round"></button>
