@@ -81,11 +81,6 @@ angular.module('controllers', [])
           # TODO: handle error
 
     # configure modals
-    $ionicModal.fromTemplateUrl 'new-lockup.html',
-      scope: $scope
-      animation: 'slide-in-up'
-    .then (modal) -> $scope.modal = modal
-
     $ionicModal.fromTemplateUrl 'lockup-info.html',
       scope: $scope
       animation: 'slide-in-up'
