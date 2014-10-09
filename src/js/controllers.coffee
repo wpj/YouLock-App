@@ -86,10 +86,10 @@ angular.module('controllers', [])
       animation: 'slide-in-up'
     .then (modal) -> $scope.infoModal = modal
 
-    $ionicModal.fromTemplateUrl 'auth.html',
+    $ionicModal.fromTemplateUrl 'dashboard.html',
       scope: $scope
       animation: 'slide-in-up'
-    .then (modal) -> $scope.authModal = modal
+    .then (modal) -> $scope.dashboard = modal
 
     # open modals
     $scope.openLockupInfoModal = ($markerModel) ->
@@ -98,12 +98,12 @@ angular.module('controllers', [])
       $scope.infoModal.show()
       Analytics.incrementPageViews $scope.data.currentLockup
 
-    $scope.showAuthModal = ->
+    $scope.openDashboard = ->
       $scope.processingAuth = true
       $ionicLoading.hide()
       $scope.loginEnabled = true
       $scope.registrationEnabled = false
-      $scope.authModal.show()
+      $scope.dashboard.show()
       User.loggedIn()
         .then (user) ->
           $scope.processingAuth = false
@@ -151,15 +151,15 @@ angular.module('controllers', [])
               noBackdrop: true
 ]
 
-.controller 'AuthCtrl',
+.controller 'DashboardCtrl',
   ['$scope', 'User', ($scope, User) ->
     $scope.toggleAuthForm = ->
       $scope.userMessages.authMessage = ''
       $scope.loginEnabled = not $scope.loginEnabled
       $scope.registrationEnabled = not $scope.registrationEnabled
 
-    $scope.closeAuthModal = ->
-      $scope.authModal.hide()
+    $scope.closeDashboard = ->
+      $scope.dashboard.hide()
       $scope.registration.email = ''
       $scope.registration.password = ''
       $scope.loginCreds.email = ''
@@ -295,7 +295,7 @@ angular.module('controllers', [])
               noBackdrop: true
 
             $scope.data.userLockups.push data.data
-            $scope.authModal.hide()
+            $scope.dashboard.hide()
 
             $scope.data.lockup =
               description: ""

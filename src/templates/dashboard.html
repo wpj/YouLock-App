@@ -1,4 +1,4 @@
-<div class="modal" ng-controller="AuthCtrl">
+<div class="modal" ng-controller="DashboardCtrl">
   <ion-header-bar class="bar-dark">
     <h1 class="title">{{ currentUser.email }}</h1>
     <button ng-if="registrationEnabled && !loggedIn && !processingAuth" class="button" ng-click="toggleAuthForm()">Log in</button>
@@ -97,6 +97,6 @@
   </ion-content>
 
   <ion-footer-bar class="bar-dark">
-    <button ng-click="closeAuthModal()" class="button button-icon icon ion-close-round"></button>
+    <button ng-click="closeDashboard()" class="button button-icon icon ion-close-round"></button>
   </ion-footer-bar>
 </div>
