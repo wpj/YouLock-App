@@ -277,12 +277,20 @@ angular.module('controllers', [])
               $scope.locationQuery.text = formattedAddress
             .catch (err) ->
               # handle error
+        else
+          geolocate()
+            .then (position) ->
+              $scope.processingLocation = false
+              $scope.data.lockup.location.coordinates = [position.coords.longitude, position.coords.latitude]
+              $scope.processLocation()
+            .catch (error) ->
+              showLocationErrorAlert()
 
     $scope.submitLockup = ->
       # possible put back blur on form input elements
       Lockup.submit $scope.data.lockup
         .then (data) ->
-          if data.name is "ValidationError"
+          if data.data.name is "ValidationError"
             $ionicLoading.show
               template: 'Lockup creation failed'
               duration: 800
@@ -365,7 +373,6 @@ angular.module('controllers', [])
       document.activeElement.blur()
       Report.submit $scope.lockupReport
         .then (report) ->
-          console.log report
           $ionicLoading.show
             template: 'Report submitted'
             duration: 800
