@@ -179,6 +179,59 @@ angular.module('controllers', [])
               noBackdrop: true
 ]
 
+.controller 'AuthCtrl',
+  ['$scope', 'User', ($scope, User) ->
+    $scope.toggleAuthForm = ->
+      $scope.userMessages.authMessage = ''
+      $scope.loginEnabled = not $scope.loginEnabled
+      $scope.registrationEnabled = not $scope.registrationEnabled
+
+    $scope.closeAuthModal = ->
+      $scope.authModal.hide()
+      $scope.registration.email = ''
+      $scope.registration.password = ''
+      $scope.loginCreds.email = ''
+      $scope.loginCreds.password = ''
+      $scope.userMessages.authMessage = ''
+      $scope.newLockupAttempt = false
+
+    $scope.register = ->
+      User.register $scope.registration
+        .then (response) ->
+          $scope.loggedIn = true
+          $scope.currentUser = response.data.user
+          $scope.registrationEnabled = false
+          $scope.loginEnabled = true
+          $scope.registration =
+            email: ''
+            password: ''
+        .catch (error) ->
+          console.log error
+          $scope.userMessages.authMessage = error.data.info.signupMessage or "username/password invalid"
+
+    $scope.login = ->
+      User.login $scope.loginCreds
+        .then (response) ->
+          $scope.loggedIn = true
+          $scope.currentUser = response.data.user
+          $scope.loginCreds =
+            email: ''
+            password: ''
+          if $scope.userMessages.authMessage
+            $scope.userMessages.authMessage = ""
+            $scope.newLockupAttempt = false if $scope.newLockupAttempt
+        .catch (error) ->
+          console.log error
+          $scope.userMessages.authMessage = error.data.info.loginMessage or "email/password is incorrect"
+
+    $scope.logout = ->
+      User.logout()
+        .then (data) ->
+          $scope.loggedIn = false
+        .catch (error) ->
+          # console.log error
+]
+
 .controller 'SubmissionCtrl',
   ['$scope', 'Lockup', 'geolocate', "$ionicLoading"
   ($scope, Lockup, geolocate, $ionicLoading) ->
