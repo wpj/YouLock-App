@@ -142,10 +142,9 @@ angular.module('controllers', [])
             Analytics.sendAddress data[0].geometry.location.k, data[0].geometry.location.A
           .catch (error) ->
             $ionicLoading.hide()
-            $ionicLoading.show
-              template: 'The address you searched for was not found'
-              duration: 800
-              noBackdrop: true
+            $ionicPopup.alert
+              title: 'Not found!'
+              template: 'The address you searched for was not found.'
 ]
 
 .controller 'DashboardCtrl',
@@ -200,8 +199,8 @@ angular.module('controllers', [])
 ]
 
 .controller 'SubmissionCtrl',
-  ['$scope', 'Lockup', 'geolocate', '$ionicLoading',
-  ($scope, Lockup, geolocate, $ionicLoading) ->
+  ['$scope', 'Lockup', 'geolocate', '$ionicPopup',
+  ($scope, Lockup, geolocate, $ionicPopup) ->
 
     $scope.locationQuery = text: ""
 
@@ -244,10 +243,9 @@ angular.module('controllers', [])
             $scope.data.lockup.address = formattedAddress
             $scope.locationQuery.text = formattedAddress
           .catch (error) ->
-            $ionicLoading.show
-              template: 'Address not found'
-              duration: 1000
-              noBackdrop: true
+            $ionicPopup.alert
+              title: 'Not found!'
+              template: 'The address you searched for was not found'
       else if $scope.locationQuery.text is undefined
         $scope.locationQuery.text = ""
         $scope.data.lockup.location.coordinates = []
@@ -288,16 +286,11 @@ angular.module('controllers', [])
       Lockup.submit $scope.data.lockup
         .then (data) ->
           if data.data.name is "ValidationError"
-            $ionicLoading.show
-              template: 'Lockup creation failed'
-              duration: 800
-              noBackdrop: true
+            $ionicPopup.alert
+              title: 'Lockup creation failed!'
+              template: 'There was an issue, please try again.'
           else
             data.data.icon = 'img/red.png'
-            $ionicLoading.show
-              template: 'Lockup created'
-              duration: 800
-              noBackdrop: true
 
             $scope.data.userLockups.push data.data
             $scope.dashboard.hide()
@@ -314,10 +307,9 @@ angular.module('controllers', [])
             $scope.locationQuery.text = ""
 
         .catch (error) ->
-          $ionicLoading.show
-            template: 'Lockup not created'
-            duration: 100
-            noBackdrop: true
+          $ionicPopup.alert
+            title: 'Lockup creation failed!'
+            template: 'There was an issue, please try again.'
 
     $scope.closeModal = ->
       $scope.modal.hide()
@@ -325,7 +317,8 @@ angular.module('controllers', [])
 ]
 
 .controller 'LockupInfoCtrl',
-  ['$scope', '$ionicPopup', '$ionicLoading', 'Report', ($scope, $ionicPopup, $ionicLoading, Report) ->
+  ['$scope', '$ionicPopup', 'Report',
+  ($scope, $ionicPopup, Report) ->
     $scope.closeLockupInfoModal = ->
       $scope.infoModal.hide()
       $scope.data.currentLockup = {}
@@ -369,14 +362,8 @@ angular.module('controllers', [])
     submitReport = ->
       document.activeElement.blur()
       Report.submit $scope.lockupReport
-        .then (report) ->
-          $ionicLoading.show
-            template: 'Report submitted'
-            duration: 800
-            noBackdrop: true
         .catch (error) ->
-          $ionicLoading.show
-            template: 'Report submission failed'
-            duration: 800
-            noBackdrop: true
+          $ionicPopup.alert
+              title: 'Report submission failed!'
+              template: 'There was an issue, please try again.'
 ]
