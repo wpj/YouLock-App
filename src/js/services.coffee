@@ -93,4 +93,4 @@ angular.module('services', [])
 ]
 
 # .constant 'ServerUrl', 'http://www.youlock.co/'
-.constant 'ServerUrl', 'http://localhost:8080/'
+.constant 'ServerUrl', 'http://192.168.1.35:8080/'
