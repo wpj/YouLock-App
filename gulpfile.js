@@ -65,7 +65,7 @@ gulp.task('ng-templates', function() {
   gulp.src('src/templates/**/*')
   .pipe(htmlMin({ collapseWhitespace: true }))
   .pipe(templateCache({
-    module: 'lockupFront'
+    module: 'youLock'
   }))
   .pipe(uglify())
   .pipe(gulp.dest(dist.directory + 'js'))

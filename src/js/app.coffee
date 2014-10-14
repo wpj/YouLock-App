@@ -1,4 +1,4 @@
-angular.module('lockupFront', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'ngAutocomplete'])
+angular.module('youLock', ['ionic', 'google-maps', 'controllers', 'directives', 'services', 'ngCordova', 'ngAutocomplete'])
 
 .config ['$httpProvider', '$sceDelegateProvider', ($httpProvider, $sceDelegateProvider) ->
   # $httpProvider.responseInterceptors.push ['$q', ($q) ->
