@@ -35,11 +35,8 @@ angular.module('controllers', [])
       $ionicLoading.show
         content: '<i class="icon ion-loading-c"></i>'
         noBackdrop: true
-        showBackdrop: false
-
-      $timeout ->
-        $ionicLoading.hide()
-      , 1000
+        showBackdrop: false,
+        duration: 1000
 
       geolocate()
         .then (position) ->
