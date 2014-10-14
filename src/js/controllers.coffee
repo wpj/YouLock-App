@@ -194,6 +194,7 @@ angular.module('controllers', [])
       User.logout()
         .then (data) ->
           $scope.loggedIn = false
+          $scope.currentUser = {}
         .catch (error) ->
           # console.log error
 ]
