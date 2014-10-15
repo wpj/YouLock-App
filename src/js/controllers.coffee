@@ -167,6 +167,7 @@ angular.module('controllers', [])
         .then (response) ->
           $scope.loggedIn = true
           $scope.currentUser = response.data.user
+          $scope.data.lockup.createdBy = $scope.currentUser.id
           $scope.registrationEnabled = false
           $scope.loginEnabled = true
           $scope.registration =
@@ -181,6 +182,7 @@ angular.module('controllers', [])
         .then (response) ->
           $scope.loggedIn = true
           $scope.currentUser = response.data.user
+          $scope.data.lockup.createdBy = $scope.currentUser.id
           $scope.loginCreds =
             email: ''
             password: ''
