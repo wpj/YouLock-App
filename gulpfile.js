@@ -51,8 +51,8 @@ gulp.task('js', function() {
 });
 
 gulp.task('bower', function() {
-  // gulp.src(mainFiles(), { base: 'bower_components'})
-  gulp.src('bower_components/**')
+  gulp.src(mainFiles(), { base: 'bower_components'})
+  // gulp.src('bower_components/**')
   .pipe(gulp.dest(dist.directory + 'lib'));
 });
 

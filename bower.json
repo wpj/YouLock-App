@@ -1,13 +1,25 @@
 {
   "name": "youlock-app",
   "private": "true",
-  "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.13"
-  },
   "dependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.13",
     "ngCordova": "~0.1.2-alpha",
     "ngAutocomplete": "~1.0.0",
     "angular-google-maps": "~1.2.4",
     "lodash": "~2.4.1"
+  },
+  "overrides": {
+    "ionic": {
+      "main": "**"
+    },
+    "angular-google-maps": {
+      "main": "dist/angular-google-maps.min.js"
+    },
+    "lodash": {
+      "main": "dist/lodash.min.js"
+    },
+    "angular": {
+      "main": "angular.min.js"
+    }
   }
 }
